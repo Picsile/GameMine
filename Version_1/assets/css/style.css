@@ -1,0 +1,104 @@
+body { 
+    background-image: url(https://catherineasquithgallery.com/uploads/posts/2021-02/1612798645_73-p-goluboe-nebo-s-oblakami-fon-dlya-fotoshopa-112.jpg);
+    background-attachment: fixed;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    margin: 0;
+    
+    zoom: 101.5%;
+}
+
+/* body::-webkit-scrollbar {
+    display: none;
+} */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    margin: 0;
+}
+
+*,
+::after,
+::before {
+    box-sizing: border-box;
+}
+
+.container {
+    position: relative;
+}
+
+.block,
+.player {
+    position: absolute;
+}
+
+.position {
+    position: absolute;
+    z-index: 10;
+}
+
+@keyframes MovementFront {
+    0% {
+        margin-left: -50px;
+    }
+
+    100% {
+        margin-left: 0px;
+    }
+}
+
+@keyframes MovementBehind {
+    0% {
+        margin-left: 50px;
+    }
+
+    100% {
+        margin-left: 0px;
+    }
+}
+
+@keyframes MovementUp {
+    0% {
+        margin-top: 50px;
+    }
+
+    100% {
+        margin-top: 0px;
+    }
+}
+
+@keyframes MovementDown {
+    0% {
+        margin-top: -50px;
+    }
+
+    100% {
+        margin-top: 0px;
+    }
+}
+
+.anim {
+    animation: Breath 2s infinite;
+}
+
+@keyframes Breath {
+    0% {    
+        margin-top: 2.2px;
+        transform: scale(0.98, 0.96);
+    }
+
+    50% {
+        margin-top: 0;
+        transform: scale(1, 1);
+    }
+
+    100% {    
+        margin-top: 2.2px;
+        transform: scale(0.98, 0.96);
+    }
+}
