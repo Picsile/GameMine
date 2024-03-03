@@ -1,6 +1,6 @@
 <h1>GameMine</h1>
 <h3>Minecraft and Terraria Mashup</h3>
-<img src = "Version_1.1/изображение_2024-03-01_233648420.png"></img>
+<img src = "preview.jpg"></img>
 
 <!-- Version 1.2 -->
 <br>
