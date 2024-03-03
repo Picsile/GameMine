@@ -2,6 +2,29 @@
 <h3>Minecraft and Terraria Mashup</h3>
 <img src = "preview.jpg"></img>
 
+<!-- Управление -->
+<h2>English</h2>
+<h3>Controls for the first player:</h3>
+<p>A - move left</p>
+<p>D - move right</p>
+<p>W - Jump</p>
+<p>S - Crouch</p>
+<p>T - break block above</p>
+<p>G - break block below</p>
+<p>Y - break block at head level in front</p>
+<p>H - break block at foot level in front</p>
+<br>
+<h3>Controls for the second player:</h3>
+<p>ArrowLeft - move left</p>
+<p>ArrowRight - move right</p>
+<p>ArrowUp - Jump</p>
+<p>ArrowDown - Crouch</p>
+<p>Numpad 5 - break block above</p>
+<p>Numpad 2 - break block below</p>
+<p>Numpad 6 - break block at head level in front</p>
+<p>Numpad 3 - break block at foot level in front</p>
+
+<br>
 <h2>Русский</h2>
 <h3>Управление для первого игрока:</h3>
 <p>A - шаг в лево</p>
@@ -12,7 +35,6 @@
 <p>G - сломать блок под собой</p>
 <p>Y - сломать блок на уровне головы перед собой</p>
 <p>H - сломать блок на уровне ног перед собой</p>
-
 <br>
 <h3>Управление для второго игрока:</h3>
 <p>ArrowLeft - шаг в лево</p>
