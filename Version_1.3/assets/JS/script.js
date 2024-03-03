@@ -7,25 +7,12 @@ const darkDiv = document.getElementById('dark');
 const darkFonDiv = document.getElementById('darkFon');
 const skyDiv = document.getElementById('sky');
 
-// const player1 = document.getElementById('player1');
-// const player2 = document.getElementById('player2');
-
-// const player1AnimLeft = document.getElementById('player1AnimLeft');
-// const player1AnimRight = document.getElementById('player1AnimRight');
-// const player1AnimUP = document.getElementById('player1AnimUP');
-// const player1AnimDown = document.getElementById('player1AnimDown');
-
-// const player2AnimLeft = document.getElementById('player2AnimLeft');
-// const player2AnimRight = document.getElementById('player2AnimRight');
-// const player2AnimUP = document.getElementById('player2AnimUP');
-// const player2AnimDown = document.getElementById('player2AnimDown');
-
 const sky = document.getElementById('sky');
 const stars = document.getElementById('stars');
 const sun = document.getElementById('sun');
 const moon = document.getElementById('moon');
 
-const cellSize = 50;
+const cellSize = 35.5;
 const players = [];
 
 // Класс игрок
@@ -51,7 +38,6 @@ class Player {
             document.getElementById(`player${this.playerNumber}AnimUP`),
             document.getElementById(`player${this.playerNumber}AnimDown`)
         ];
-        console.log(this.externalVariables);
     }
 
     // Передвижение
@@ -379,6 +365,8 @@ const World = {
     widthArray: 0,
     heightArray: 0,
 
+    startheight: 15,
+
     time: 'day',
 
     //Изменения дкнь / ночь
@@ -437,11 +425,11 @@ const World = {
                 this2.mapDark.push([]);
             }
 
-            skyDiv.style.height = `${13 * cellSize}px`;
+            skyDiv.style.height = `${(this2.startheight + 6) * cellSize}px`;
 
             darkFonDiv.style.width = `${widthArray * cellSize}px`;
             darkFonDiv.style.height = `${heightArray * cellSize}px`;
-            darkFonDiv.style.marginTop = `${13 * cellSize}px`;
+            darkFonDiv.style.marginTop = `${(this2.startheight + 6) * cellSize}px`;
             darkFonDiv.style.backgroundColor = "black";
         }
 
@@ -451,7 +439,7 @@ const World = {
             for (let i = 0; i < this2.heightArray; i++) {
                 for (let j = 0; j < this2.widthArray; j++) {
 
-                    if (i == 7) {
+                    if (i == this2.startheight) {
                         if (j > 1) {
                             if (this2.map[i][j - 2] == undefined && this2.map[i][j - 1] != undefined) {
 
@@ -478,7 +466,7 @@ const World = {
                         }
                     }
 
-                    if (i >= 8 && i < 15) {
+                    if (i >= this2.startheight + 1 && i < this2.startheight + 8) {
                         if (j > 0 && j < this2.widthArray - 1) {
 
                             if (this2.map[i - 1][j] == undefined) {
@@ -533,7 +521,7 @@ const World = {
                         }
                     }
 
-                    if (i >= 15 && i < this2.heightArray - 1) {
+                    if (i >= this2.startheight + 8 && i < this2.heightArray - 1) {
                         this2.map[i][j] = 2;
                         this2.mapBehind[i][j] = 2;
                     }
@@ -743,7 +731,7 @@ const World = {
                 for (let j = 0; j < this2.widthArray; j++) {
 
                     // Проверка на пустую ячейку
-                    if (i > 15 && j < this2.map[i - 3][j] != undefined) {
+                    if (i > this2.startheight + 8 && j < this2.map[i - 3][j] != undefined) {
 
                         // Шанс генерации
                         if (Math.floor(Math.random() * 100) == 0) {

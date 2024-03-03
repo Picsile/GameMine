@@ -1,0 +1,111 @@
+/* Окружение */
+.environment,
+.world,
+.block,
+.player {
+    position: absolute;
+}
+
+.darkFon {
+    position: absolute;
+    z-index: 10;
+    background-color: black;
+}
+
+/* Небо */
+#sky {
+    position: absolute;
+    width: 100%;
+    background-color: #96c7ff;
+}
+
+#sun {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    background-color: white;
+    width: 142px;
+    height: 142px;
+}
+
+#moon {
+    position: absolute;
+    top: -142px;
+    left: 25px;
+    background-image: url(https://yt3.googleusercontent.com/ytc/AGIKgqOpvDTm5Z-tCpzIeolHADJML9aLCb3QNNZbMBEovg=s900-c-k-c0x00ffffff-no-rj);
+    background-size: cover;
+    width: 142px;
+    height: 142px;
+}
+
+#stars {
+    background-image: url(../img/world/Звёзды2.png);
+    background-size: 35%;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+@keyframes OFF {
+    0% {
+        top: 25px;
+    }
+
+    100% {
+        top: -142px;
+    }
+}
+
+@keyframes ON { 
+    0% {
+        top: -142px;
+    }
+
+    30% {
+        top: -142px;
+    }
+
+    100% {
+        top: 25px;
+    }
+}
+
+@keyframes starsON {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes starsOFF {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes colorNight {
+    0% {
+        background-color: #96c7ff;
+    }
+
+    100% {
+        background-color: #222f3f;
+    }
+}
+
+@keyframes colorDay {
+    0% {
+        background-color: #222f3f;
+    }
+
+    100% {
+        background-color: #96c7ff;
+    }
+}
