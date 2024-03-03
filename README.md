@@ -8,7 +8,7 @@
 
 <p>Snapshots:</p>
 <img src="Version_1.2/snapshots/Dark.png" width="400" height="350"></img>
-<img src="Version_1.2/snapshots/change of day.gif" width="400" height="225"></img>
+<img src="Version_1.2/snapshots/change of day.gif" width="400" height="250"></img>
 
 <h3>English</h3>
 <p>Changes:</p>
