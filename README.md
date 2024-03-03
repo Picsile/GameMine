@@ -6,6 +6,8 @@
 <br>
 <h2>Version 1.2</h2>
 
+<p><a href="https://picsile.github.io/GameMine/Version_1.2/index.html">Link to test</a></p>
+
 <p>Snapshots:</p>
 <img src="Version_1.2/snapshots/Dark.png" width="400" height="350"></img>
 <img src="Version_1.2/snapshots/change of day.gif" width="400" height="250"></img>
@@ -39,11 +41,11 @@
     <li>Изменена генерация массива передних блоков и задних блоков.</li>
 </ul>
 
-<p><a href="https://picsile.github.io/GameMine/Version_1.2/index.html">Link to test</a></p>
-
 <!-- Version 1.1 -->
 <br>
 <h2>Version 1.1</h2>
+
+<p><a href="https://picsile.github.io/GameMine/Version_1.1/index.html">Link to test</a></p>
 
 <h3>English</h3>
 <p>Changes:</p>
@@ -71,8 +73,6 @@
     <li>Изменино управление</li>
     <li>Убрана возможность ставить блоки.</li>
 </ul>
-
-<p><a href="https://picsile.github.io/GameMine/Version_1.1/index.html">Link to test</a></p>
 
 <!-- Version 1 -->
 <br>
