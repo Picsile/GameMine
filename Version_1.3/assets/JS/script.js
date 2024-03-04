@@ -148,17 +148,16 @@ class Player {
                 </div>
                 </div>`;
 
-
         this.externalVariables[0].innerHTML = playerHTML;
 
         switch (varAnim) {
-            case 0: this.externalVariables[1].style.animation = 'MovementFront 0.15s ease-out';
+            case 0: this.externalVariables[1].style.animation = 'MovementFront 0.1s ease-out';
                 setTimeout(() => {
                     this.externalVariables[1].style.animation = '';
                     this.externalVariables[2].style.animation = '';
                 }, 150);
                 break;
-            case 1: this.externalVariables[2].style.animation = 'MovementBehind 0.15s ease-out';
+            case 1: this.externalVariables[2].style.animation = 'MovementBehind 0.1s ease-out';
                 setTimeout(() => {
                     this.externalVariables[1].style.animation = '';
                     this.externalVariables[2].style.animation = '';
@@ -1084,7 +1083,9 @@ document.addEventListener('keydown', (event) => {
     if (currentCharacter != null) {
         if (players[currentCharacter]['controlKeys'].slice(0, 4).includes(event.code)) {
             event.preventDefault();
-            players[currentCharacter].movement(event.code);
+            setTimeout(() => {
+                players[currentCharacter].movement(event.code);
+            }, 40);
         }
     }
 

@@ -4,6 +4,7 @@
 .block,
 .player {
     position: absolute;
+    z-index: 10;
 }
 
 #darkFon {
