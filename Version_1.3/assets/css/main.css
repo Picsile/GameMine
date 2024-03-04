@@ -1,19 +1,10 @@
-:root {
-    --cellSize: 35.5px;
-    --cellSizeNegative: -35.5px;
-}
-
 body {
-    background-attachment: initial;
-    background-size: 100%;
-    background-repeat: no-repeat;
+    background-color: rgb(31, 31, 31);
     margin: 0;
-    
-    zoom: 101.5%;
 }
 
-/* body::-webkit-scrollbar {
-    display: none;
+/* ::-webkit-scrollbar {
+    width: 15px;
 } */
 
 h1,
@@ -32,6 +23,13 @@ p {
     box-sizing: border-box;
 }
 
-.container {
+#game {     
+    overflow:scroll;
     position: relative;
+    width: 1200px;
+    height: 800px;
+   
+    border: 5px solid black;
+    margin-left: auto;
+    margin-right: auto;
 }

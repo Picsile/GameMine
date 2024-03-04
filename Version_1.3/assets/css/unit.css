@@ -60,3 +60,9 @@
         transform: scale(0.98, 0.96);
     }
 }
+
+/* Инвентари */
+.player1Invrntory {
+    position: absolute;
+    
+}

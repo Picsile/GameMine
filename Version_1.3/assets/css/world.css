@@ -6,9 +6,7 @@
     position: absolute;
 }
 
-.darkFon {
-    position: absolute;
-    z-index: 10;
+#darkFon {
     background-color: black;
 }
 
@@ -21,21 +19,21 @@
 
 #sun {
     position: absolute;
-    top: 25px;
-    left: 25px;
+    top: var(--planetPaddingSize);
+    left: var(--planetPaddingSize);
     background-color: white;
-    width: 142px;
-    height: 142px;
+    width: var(--planetSize);
+    height: var(--planetSize);
 }
 
 #moon {
     position: absolute;
-    top: -142px;
-    left: 25px;
+    top: var(--planetSizeNegative);
+    left: var(--planetPaddingSize);
     background-image: url(https://yt3.googleusercontent.com/ytc/AGIKgqOpvDTm5Z-tCpzIeolHADJML9aLCb3QNNZbMBEovg=s900-c-k-c0x00ffffff-no-rj);
     background-size: cover;
-    width: 142px;
-    height: 142px;
+    width: var(--planetSize);
+    height: var(--planetSize);
 }
 
 #stars {
@@ -48,25 +46,25 @@
 
 @keyframes OFF {
     0% {
-        top: 25px;
+        top: var(--planetPaddingSize);
     }
 
     100% {
-        top: -142px;
+        top: var(--planetSizeNegative);
     }
 }
 
 @keyframes ON { 
     0% {
-        top: -142px;
+        top: var(--planetSizeNegative);
     }
 
     30% {
-        top: -142px;
+        top: var(--planetSizeNegative);
     }
 
     100% {
-        top: 25px;
+        top: var(--planetPaddingSize);
     }
 }
 

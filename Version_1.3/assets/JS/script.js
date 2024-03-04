@@ -1,4 +1,9 @@
 // Получаем объекты документа
+const root = document.documentElement;
+
+const gameDiv = document.getElementById('game');
+const sizeGameDiv = document.getElementById('sizeGame');
+
 const blocksBehindDiv = document.getElementById('blocksBehind');
 const blocksDiv = document.getElementById('blocks');
 const blocksFrontDiv = document.getElementById('blocksFront');
@@ -12,8 +17,10 @@ const stars = document.getElementById('stars');
 const sun = document.getElementById('sun');
 const moon = document.getElementById('moon');
 
-const cellSize = 35.5;
+let cellSize = 35.5;
+let currentZoom = cellSize;
 const players = [];
+
 
 // Класс игрок
 class Player {
@@ -28,6 +35,12 @@ class Player {
     controlKeys = [];
     externalVariables = [];
     fallingSpeed = 0;
+
+    // Сформировать размеры игрока
+    generatePlayerDimensions() {
+        this.width = cellSize;
+        this.height = cellSize * 2;
+    }
 
     // Сформировать внешние переменные
     generateExternalVariables() {
@@ -93,7 +106,7 @@ class Player {
 
             if (Math.round(this.cordY) == this.cordY) {
                 this.height = cellSize * 2 * 95 / 100;
-                this.cordY += cellSize * 2 / 883;
+                this.cordY += cellSize * 2 / 700;
                 this.upDatePlayer();
 
                 setTimeout(() => {
@@ -424,13 +437,20 @@ const World = {
                 this2.mapBehind.push([]);
                 this2.mapDark.push([]);
             }
+        }
 
+        // Генерация размеров мира
+        function generatingWorldSizes() {
             skyDiv.style.height = `${(this2.startheight + 6) * cellSize}px`;
-
-            darkFonDiv.style.width = `${widthArray * cellSize}px`;
-            darkFonDiv.style.height = `${heightArray * cellSize}px`;
+            darkFonDiv.style.width = `${this2.widthArray * cellSize}px`;
+            darkFonDiv.style.height = `${this2.heightArray * cellSize}px`;
             darkFonDiv.style.marginTop = `${(this2.startheight + 6) * cellSize}px`;
-            darkFonDiv.style.backgroundColor = "black";
+
+            root.style.setProperty('--cellSize', `${cellSize}px`);
+            root.style.setProperty('--cellSizeNegative', `${cellSize * (-1)}px`);
+            root.style.setProperty('--planetSize', `${cellSize * 100 * 4.4 / 100}px`);
+            root.style.setProperty('--planetSizeNegative', `${cellSize * (-1) * 100 * 4.4 / 100}px`);
+            root.style.setProperty('--planetPaddingSize', `${cellSize * 77 / 100}px`);
         }
 
         // Генерация шаблона
@@ -880,7 +900,8 @@ const World = {
             generateCave,
             removeExtraBlocks,
             generateMine,
-            generatePlayers
+            generatePlayers,
+            generatingWorldSizes
         ];
     },
 
@@ -1015,6 +1036,7 @@ function generateMap(width = 100, height = 60) {
 
     // Генерация
     World.generateWorld()[0](width, height);
+    World.generateWorld()[6]();
     World.generateWorld()[1]();
     World.generateWorld()[2]();
     World.generateWorld()[3]();
@@ -1062,9 +1084,7 @@ document.addEventListener('keydown', (event) => {
     if (currentCharacter != null) {
         if (players[currentCharacter]['controlKeys'].slice(0, 4).includes(event.code)) {
             event.preventDefault();
-            setTimeout(() => {
-                players[currentCharacter].movement(event.code);
-            }, 40)
+            players[currentCharacter].movement(event.code);
         }
     }
 
@@ -1104,6 +1124,30 @@ document.addEventListener('keydown', (event) => {
         }
     }
 });
+
+
+// Приближение
+gameDiv.addEventListener('wheel', (event) => {
+    event.preventDefault();
+
+    let direction = event.deltaY > 0 ? -1 : 1;
+    const stepSize = 1;
+
+    if (currentZoom + direction * stepSize > 20 && currentZoom + direction * stepSize < 50) {
+        currentZoom += direction * stepSize;
+        cellSize = currentZoom;
+
+        World.generateWorld()[6]();
+
+        players[0].generatePlayerDimensions();
+        players[1].generatePlayerDimensions();
+        players[0].upDatePlayer();
+        players[1].upDatePlayer();
+
+        World.upDate()[0]();
+        World.upDate()[2]();
+    }
+})
 
 
 // Отслеживает обновление мира
