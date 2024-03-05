@@ -35,6 +35,9 @@ class Player {
     controlKeys = [];
     externalVariables = [];
     fallingSpeed = 0;
+    inventory = [];
+    currentItem = undefined;
+
 
     // Сформировать размеры игрока
     generatePlayerDimensions() {
@@ -121,19 +124,19 @@ class Player {
     // Ломать
     breakBlock(event) {
         if (event == this.controlKeys.slice(4, 5)) {
-            World.actions()[1](Math.round(this.cordY) - 2, this.cordX);
+            World.actions()[1](Math.round(this.cordY) - 2, this.cordX, this.playerNumber);
         }
 
         if (event == this.controlKeys.slice(5, 6)) {
-            World.actions()[1](Math.round(this.cordY) + 1, this.cordX);
+            World.actions()[1](Math.round(this.cordY) + 1, this.cordX, this.playerNumber);
         }
 
         if (event == this.controlKeys.slice(6, 7)) {
-            World.actions()[1](Math.round(this.cordY) - 1, this.cordX + this.side * (-1));
+            World.actions()[1](Math.round(this.cordY) - 1, this.cordX + this.side * (-1), this.playerNumber);
         }
 
         if (event == this.controlKeys.slice(7, 8)) {
-            World.actions()[1](Math.round(this.cordY), this.cordX + this.side * (-1));
+            World.actions()[1](Math.round(this.cordY), this.cordX + this.side * (-1), this.playerNumber);
         }
     }
 
@@ -224,6 +227,35 @@ class Player {
             }
         }, 150);
     }
+
+    // Добавить предмет в массив
+    addItemInInventory(Y, X) {
+        let res = undefined;
+        for (let i = 0; i < this.inventory.length; i++) {
+
+            if (this.inventory[i]['src'] == blocks[blocks[World.map[Y][X]]['dropoutBlock']]['src']) {
+                res = i;
+            }
+        };
+
+        if (res == undefined) {
+
+            this.inventory.push(blocks[blocks[World.map[Y][X]]['dropoutBlock']]);
+            this.inventory[this.inventory.length - 1]['quantity'] = 1;
+
+        } else this.inventory[res]['quantity'] += 1;
+
+
+    }
+
+    // Вывод инвнтаря
+    upDateInventory() {
+        if (this.currentItem == null) {
+            if (this.inventory.length > 0) {
+                
+            }
+        }
+    }
 }
 
 
@@ -235,6 +267,8 @@ const blocks = [
         'flowability': 0,
         'strength': 3.5,
         'typeOfTool': 1,
+        'dropOutWithoutATool': true,
+        'dropoutBlock': 1,
         'transparency': 0
     },
     {
@@ -243,6 +277,8 @@ const blocks = [
         'flowability': 0,
         'strength': 3.5,
         'typeOfTool': 1,
+        'dropOutWithoutATool': true,
+        'dropoutBlock': 1,
         'transparency': 0
     },
     {
@@ -250,7 +286,9 @@ const blocks = [
         'collision': 1,
         'flowability': 0,
         'strength': 1.6,
-        'typeOfTool': 1,
+        'typeOfTool': 2,
+        'dropOutWithoutATool': false,
+        'dropoutBlock': 13,
         'transparency': 0
     },
     {
@@ -264,7 +302,9 @@ const blocks = [
         'collision': 1,
         'flowability': 0,
         'strength': 2,
-        'typeOfTool': 1,
+        'typeOfTool': 3,
+        'dropOutWithoutATool': true,
+        'dropoutBlock': 4,
         'transparency': 0
     },
     {
@@ -272,7 +312,9 @@ const blocks = [
         'collision': 1,
         'flowability': 0,
         'strength': 2,
-        'typeOfTool': 1,
+        'typeOfTool': 3,
+        'dropOutWithoutATool': true,
+        'dropoutBlock': 5,
         'transparency': 1
     },
     {
@@ -280,7 +322,9 @@ const blocks = [
         'collision': 0,
         'flowability': 0,
         'strength': 10,
-        'typeOfTool': 1,
+        'typeOfTool': null,
+        'dropOutWithoutATool': true,
+        'dropoutBlock': undefined,
         'transparency': 1
     },
     {
@@ -288,7 +332,9 @@ const blocks = [
         'collision': 0,
         'flowability': 0,
         'strength': 10,
-        'typeOfTool': 1,
+        'typeOfTool': null,
+        'dropOutWithoutATool': true,
+        'dropoutBlock': undefined,
         'transparency': 1
     },
     {
@@ -296,7 +342,7 @@ const blocks = [
         'collision': 0,
         'flowability': 0,
         'strength': 10,
-        'typeOfTool': 1,
+        'typeOfTool': null,
         'transparency': 1
     },
     {
@@ -304,7 +350,9 @@ const blocks = [
         'collision': 0,
         'flowability': 0,
         'strength': 5,
-        'typeOfTool': 1,
+        'typeOfTool': 2,
+        'dropOutWithoutATool': true,
+        'dropoutBlock': 9,
         'transparency': 1
     },
     {
@@ -312,7 +360,9 @@ const blocks = [
         'collision': 1,
         'flowability': 0,
         'strength': 2,
-        'typeOfTool': 1,
+        'typeOfTool': 10,
+        'dropOutWithoutATool': true,
+        'dropoutBlock': 10,
         'transparency': 1
     },
     {
@@ -320,7 +370,9 @@ const blocks = [
         'collision': 1,
         'flowability': 0,
         'strength': 2,
-        'typeOfTool': 1,
+        'typeOfTool': 3,
+        'dropOutWithoutATool': true,
+        'dropoutBlock': 11,
         'transparency': 1
     },
     {
@@ -329,6 +381,18 @@ const blocks = [
         'flowability': 1,
         'strength': 2.5,
         'typeOfTool': 1,
+        'dropOutWithoutATool': true,
+        'dropoutBlock': 12,
+        'transparency': 0
+    },
+    {
+        'src': 'assets/img/textures/Блок булыжник.jpg',
+        'collision': 1,
+        'flowability': 0,
+        'strength': 1.6,
+        'typeOfTool': 2,
+        'dropOutWithoutATool': false,
+        'dropoutBlock': 13,
         'transparency': 0
     }
 ];
@@ -363,7 +427,7 @@ const cracks = [
     'assets/img/textures/Трещены уровень 8.png',
     'assets/img/textures/Трещены уровень 9.png',
     'assets/img/textures/Трещены уровень 10.png'
-]
+];
 
 
 // Объект мир
@@ -440,10 +504,14 @@ const World = {
 
         // Генерация размеров мира
         function generatingWorldSizes() {
+            stars.style.backgroundSize = `${30 * cellSize}px`;
+
             skyDiv.style.height = `${(this2.startheight + 6) * cellSize}px`;
             darkFonDiv.style.width = `${this2.widthArray * cellSize}px`;
-            darkFonDiv.style.height = `${this2.heightArray * cellSize}px`;
+            darkFonDiv.style.height = `${this2.heightArray * cellSize - (this2.startheight + 6) * cellSize}px`;
             darkFonDiv.style.marginTop = `${(this2.startheight + 6) * cellSize}px`;
+
+            gameDiv.style.maxWidth = `${(this2.widthArray + 0.5) * cellSize}px`;
 
             root.style.setProperty('--cellSize', `${cellSize}px`);
             root.style.setProperty('--cellSizeNegative', `${cellSize * (-1)}px`);
@@ -909,13 +977,14 @@ const World = {
         const this2 = this;
 
         // Ломание блоков
-        function breakingBlocks(Y, X) {
+        function breakingBlocks(Y, X, playerNumber) {
+            players[playerNumber - 1].addItemInInventory(Y, X);
             this2.map[Y][X] = undefined;
             this2.upDate()[0]();
         }
 
         // Создание трещин
-        function creatingCracks(Y, X) {
+        function creatingCracks(Y, X, playerNumber) {
 
             // Пробигаемся по массиву с трещенами
             for (let i = 0; i < this2.mapCracks.length; i++) {
@@ -927,7 +996,7 @@ const World = {
 
                     // Проверяем степень поломки
                     if (this2.mapCracks[i]['stage'] >= 10) {
-                        breakingBlocks(Y, X);
+                        breakingBlocks(Y, X, playerNumber);
                         this2.mapCracks.splice(i, 1);
                     }
 
@@ -948,6 +1017,7 @@ const World = {
                 this2.breakingBlocks(Y, X);
                 this2.mapCracks.splice(this2.mapCracks.length - 1, 1);
             }
+
             this2.upDate()[2]();
         }
 
