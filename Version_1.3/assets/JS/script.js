@@ -8,14 +8,6 @@ const blocksBehindDiv = document.getElementById('blocksBehind');
 const blocksDiv = document.getElementById('blocks');
 const blocksFrontDiv = document.getElementById('blocksFront');
 const cracksDiv = document.getElementById('cracks');
-const darkDiv = document.getElementById('dark');
-const darkFonDiv = document.getElementById('darkFon');
-const skyDiv = document.getElementById('sky');
-
-const sky = document.getElementById('sky');
-const stars = document.getElementById('stars');
-const sun = document.getElementById('sun');
-const moon = document.getElementById('moon');
 
 let cellSize = 35.5;
 let currentZoom = cellSize;
@@ -244,8 +236,6 @@ class Player {
             this.inventory[this.inventory.length - 1]['quantity'] = 1;
 
         } else this.inventory[res]['quantity'] += 1;
-
-
     }
 
     // Вывод инвнтаря
@@ -259,160 +249,144 @@ class Player {
 }
 
 
-// Объекты блоки
-const blocks = [
-    {
-        'src': 'assets/img/textures/Блок трава.jpg',
-        'collision': 1,
-        'flowability': 0,
-        'strength': 3.5,
-        'typeOfTool': 1,
-        'dropOutWithoutATool': true,
-        'dropoutBlock': 1,
-        'transparency': 0
-    },
-    {
-        'src': 'assets/img/textures/Блок грязь.jpg',
-        'collision': 1,
-        'flowability': 0,
-        'strength': 3.5,
-        'typeOfTool': 1,
-        'dropOutWithoutATool': true,
-        'dropoutBlock': 1,
-        'transparency': 0
-    },
-    {
-        'src': 'assets/img/textures/Блок камень.jpg',
-        'collision': 1,
-        'flowability': 0,
-        'strength': 1.6,
-        'typeOfTool': 2,
-        'dropOutWithoutATool': false,
-        'dropoutBlock': 13,
-        'transparency': 0
-    },
-    {
-        'src': 'assets/img/textures/Блок бедрок.jpg',
-        'collision': 1,
-        'flowability': 0,
-        'transparency': 0
-    },
-    {
-        'src': 'assets/img/textures/Блок доски.jpg',
-        'collision': 1,
-        'flowability': 0,
-        'strength': 2,
-        'typeOfTool': 3,
-        'dropOutWithoutATool': true,
-        'dropoutBlock': 4,
-        'transparency': 0
-    },
-    {
-        'src': 'assets/img/textures/Блок заборинка.png',
-        'collision': 1,
-        'flowability': 0,
-        'strength': 2,
-        'typeOfTool': 3,
-        'dropOutWithoutATool': true,
-        'dropoutBlock': 5,
-        'transparency': 1
-    },
-    {
-        'src': 'assets/img/textures/Вагонетка2.png',
-        'collision': 0,
-        'flowability': 0,
-        'strength': 10,
-        'typeOfTool': null,
-        'dropOutWithoutATool': true,
-        'dropoutBlock': undefined,
-        'transparency': 1
-    },
-    {
-        'src': 'assets/img/textures/Факел наклонённый.gif',
-        'collision': 0,
-        'flowability': 0,
-        'strength': 10,
-        'typeOfTool': null,
-        'dropOutWithoutATool': true,
-        'dropoutBlock': undefined,
-        'transparency': 1
-    },
-    {
-        'src': 'assets/img/textures/Факел наклонённый перевёрнутый.gif',
-        'collision': 0,
-        'flowability': 0,
-        'strength': 10,
-        'typeOfTool': null,
-        'transparency': 1
-    },
-    {
-        'src': 'assets/img/textures/Рельсы.png',
-        'collision': 0,
-        'flowability': 0,
-        'strength': 5,
-        'typeOfTool': 2,
-        'dropOutWithoutATool': true,
-        'dropoutBlock': 9,
-        'transparency': 1
-    },
-    {
-        'src': 'assets/img/textures/Блок ступенки.png',
-        'collision': 1,
-        'flowability': 0,
-        'strength': 2,
-        'typeOfTool': 10,
-        'dropOutWithoutATool': true,
-        'dropoutBlock': 10,
-        'transparency': 1
-    },
-    {
-        'src': 'assets/img/textures/Блок ступеньки перевёрнутые.png',
-        'collision': 1,
-        'flowability': 0,
-        'strength': 2,
-        'typeOfTool': 3,
-        'dropOutWithoutATool': true,
-        'dropoutBlock': 11,
-        'transparency': 1
-    },
-    {
-        'src': 'assets/img/textures/Блок гравий.jpg',
-        'collision': 1,
-        'flowability': 1,
-        'strength': 2.5,
-        'typeOfTool': 1,
-        'dropOutWithoutATool': true,
-        'dropoutBlock': 12,
-        'transparency': 0
-    },
-    {
-        'src': 'assets/img/textures/Блок булыжник.jpg',
-        'collision': 1,
-        'flowability': 0,
-        'strength': 1.6,
-        'typeOfTool': 2,
-        'dropOutWithoutATool': false,
-        'dropoutBlock': 13,
-        'transparency': 0
-    }
-];
-
-
 // Объекты задние блоки
-const blocksBehind = [
-    {
-        'src': 'assets/img/textures/Блок трава2.jpg'
+const blocksBehind = {
+    "BlockGrass": "assets/img/textures/Блок трава2.jpg",
+    "BlockDirt": "assets/img/textures/Блок грязь2.jpg",
+    "BlockStone": "assets/img/textures/Блок камень2.jpg",
+    "BlockBedrock": "assets/img/textures/Блок бедрок2.jpg"
+};
+
+
+// Объекты блоки
+const blocks = {
+    "BlockGrass": {
+        "src": "assets/img/textures/Блок трава.jpg",
+        "collision": true,
+        "flowability": false,
+        "breakingSpeed": 3.5,
+        "typeOfTool": "Shovel",
+        "dropOutWithoutATool": true,
+        "dropBlock": "BlockDirt"
     },
-    {
-        'src': 'assets/img/textures/Блок грязь2.jpg'
+    "BlockDirt": {
+        "src": "assets/img/textures/Блок грязь.jpg",
+        "collision": true,
+        "flowability": false,
+        "breakingSpeed": 3.5,
+        "typeOfTool": "Shovel",
+        "dropOutWithoutATool": true,
+        "dropBlock": "BlockDirt"
     },
-    {
-        'src': 'assets/img/textures/Блок камень2.jpg'
+    "BlockGravel": {
+        "src": "assets/img/textures/Блок гравий.jpg",
+        "collision": true,
+        "flowability": true,
+        "breakingSpeed": 2.5,
+        "typeOfTool": "Shovel",
+        "blockFallingOutWithoutATool": true,
+        "dropBlock": "BlockGravel"
     },
-    {
-        'src': 'assets/img/textures/Блок бедрок2.jpg'
+    "BlockStone": {
+        "src": "assets/img/textures/Блок камень.jpg",
+        "collision": true,
+        "flowability": false,
+        "breakingSpeed": 1.6,
+        "typeOfTool": "Pick",
+        "dropOutWithoutATool": false,
+        "dropBlock": "BlockPebble"
+    },
+    "BlockPebble": {
+        "src": "assets/img/textures/Блок булыжник.jpg",
+        "collision": true,
+        "flowability": false,
+        "breakingSpeed": 1.6,
+        "typeOfTool": "Pick",
+        "dropOutWithoutATool": false,
+        "dropBlock": "BlockPebble"
+    },
+    "BlockBedrock": {
+        "src": "assets/img/textures/Блок бедрок.jpg",
+        "collision": true,
+        "flowability": false,
+        "breakingSpeed": 0,
+        "typeOfTool": null,
+        "dropOutWithoutATool": false,
+        "dropBlock": null
+    },
+    "BlockPlank": {
+        "src": "assets/img/textures/Блок доски.jpg",
+        "collision": true,
+        "flowability": false,
+        "breakingSpeed": 2,
+        "typeOfTool": "Axe",
+        "dropOutWithoutATool": true,
+        "dropBlock": "BlockPlank"
+    },
+    "BlockFence": {
+        "src": "assets/img/textures/Блок заборинка.png",
+        "collision": true,
+        "flowability": false,
+        "breakingSpeed": 2,
+        "typeOfTool": "Axe",
+        "dropOutWithoutATool": true,
+        "dropBlock": "BlockFence"
+    },
+    "Minecart": {
+        "src": "assets/img/textures/Вагонетка2.png",
+        "collision": false,
+        "flowability": false,
+        "breakingSpeed": "max",
+        "typeOfTool": "Pick",
+        "dropOutWithoutATool": true,
+        "dropBlock": "Minecart"
+    },
+    "BlockTorch": {
+        "src": "assets/img/textures/Факел наклонённый.gif",
+        "collision": false,
+        "flowability": false,
+        "breakingSpeed": "max",
+        "typeOfTool": null,
+        "dropOutWithoutATool": true,
+        "dropBlock": "Torch"
+    },
+    "BlockInvertedTorch": {
+        "src": "assets/img/textures/Факел наклонённый перевёрнутый.gif",
+        "collision": false,
+        "flowability": false,
+        "breakingSpeed": "max",
+        "typeOfTool": null,
+        "dropOutWithoutATool": true,
+        "dropBlock": "Torch"
+    },
+    "Rails": {
+        "src": "assets/img/textures/Рельсы.png",
+        "collision": false,
+        "flowability": false,
+        "breakingSpeed": 5,
+        "typeOfTool": "Pick",
+        "dropOutWithoutATool": true,
+        "dropBlock": "Rails"
+    },
+    "BlockStair": {
+        "src": "assets/img/textures/Блок ступенки.png",
+        "collision": true,
+        "flowability": false,
+        "breakingSpeed": 2,
+        "typeOfTool": "Axe",
+        "dropOutWithoutATool": true,
+        "dropBlock": "BlockInvertedStair"
+    },
+    "BlockInvertedStair": {
+        "src": "assets/img/textures/Блок ступеньки перевёрнутые.png",
+        "collision": true,
+        "flowability": false,
+        "breakingSpeed": 2,
+        "typeOfTool": "Axe",
+        "dropOutWithoutATool": true,
+        "dropBlock": "BlockStair"
     }
-];
+}
 
 
 // Объкты трещены
@@ -443,42 +417,38 @@ const World = {
 
     startheight: 15,
 
-    time: 'day',
+    time: ['day', 0],
 
     //Изменения дкнь / ночь
     changeOfDay() {
 
-        if (this.time == 'day') {
+        if (this.time[0] == 'day') {
 
-            sky.style.animation = "colorNight 3s ease forwards";
-            sun.style.animation = "OFF 1.2s cubic-bezier(.5, -1, .5, 2) forwards";
-            moon.style.animation = "ON 2s cubic-bezier(.5, -1, .5, 2) forwards";
-            stars.style.animation = "starsON 3s ease forwards";
+            document.getElementById('sky').style.animation = "colorNight 3s ease forwards";
+            document.getElementById('sun').style.animation = "OFF 1.2s cubic-bezier(.5, -1, .5, 2) forwards";
+            document.getElementById('moon').style.animation = "ON 2s cubic-bezier(.5, -1, .5, 2) forwards";
+            document.getElementById('stars').style.animation = "starsON 3s ease forwards";
 
-            this.time = 'night';
+            this.time[0] = 'night';
 
         } else {
 
-            sky.style.animation = "colorDay 3s ease forwards";
-            sun.style.animation = "ON 2s cubic-bezier(.5, -1, .5, 2) forwards";
-            moon.style.animation = "OFF 1.2s cubic-bezier(.5, -1, .5, 2) forwards";
-            stars.style.animation = "starsOFF 3s ease forwards";
+            document.getElementById('sky').style.animation = "colorDay 3s ease forwards";
+            document.getElementById('sun').style.animation = "ON 2s cubic-bezier(.5, -1, .5, 2) forwards";
+            document.getElementById('moon').style.animation = "OFF 1.2s cubic-bezier(.5, -1, .5, 2) forwards";
+            document.getElementById('stars').style.animation = "starsOFF 3s ease forwards";
 
-            this.time = 'day';
+            this.time[0] = 'day';
         }
     },
 
     // Управление временем 
     timeWorld() {
-        let miliseconds = 0;
-
         setInterval(() => {
-            miliseconds++
-
-            if (miliseconds == 12000) {
+            if (this.time[1] / 12000 == Math.floor(this.time[1] / 12000)) {
                 this.changeOfDay();
-                miliseconds = 0;
             }
+            this.time[1]++;
         }, 10);
     },
 
@@ -504,12 +474,13 @@ const World = {
 
         // Генерация размеров мира
         function generatingWorldSizes() {
-            stars.style.backgroundSize = `${30 * cellSize}px`;
 
-            skyDiv.style.height = `${(this2.startheight + 6) * cellSize}px`;
-            darkFonDiv.style.width = `${this2.widthArray * cellSize}px`;
-            darkFonDiv.style.height = `${this2.heightArray * cellSize - (this2.startheight + 6) * cellSize}px`;
-            darkFonDiv.style.marginTop = `${(this2.startheight + 6) * cellSize}px`;
+            document.getElementById('stars').style.backgroundSize = `${30 * cellSize}px`;
+            document.getElementById('sky').style.height = `${(this2.startheight + 6) * cellSize}px`;
+
+            document.getElementById('darkFon').style.width = `${this2.widthArray * cellSize}px`;
+            document.getElementById('darkFon').style.height = `${this2.heightArray * cellSize - (this2.startheight + 6) * cellSize}px`;
+            document.getElementById('darkFon').style.marginTop = `${(this2.startheight + 6) * cellSize}px`;
 
             gameDiv.style.maxWidth = `${(this2.widthArray + 0.5) * cellSize}px`;
 
@@ -532,23 +503,23 @@ const World = {
 
                                 // Увеличиваем шанс двойного блока
                                 if (!Math.floor(Math.random() * 5) == 0) {
-                                    this2.map[i][j] = 0;
-                                    this2.mapBehind[i][j] = 0;
+                                    this2.map[i][j] = "BlockGrass";
+                                    this2.mapBehind[i][j] = "BlockGrass";
                                 }
                             } else {
 
                                 // Как с 2 Первыми и последними
                                 if (Math.floor(Math.random() * 10) == 0) {
-                                    this2.map[i][j] = 0;
-                                    this2.mapBehind[i][j] = 0;
+                                    this2.map[i][j] = "BlockGrass";
+                                    this2.mapBehind[i][j] = "BlockGrass";
                                 }
                             }
                         } else {
 
                             // Для 2 первых
                             if (Math.floor(Math.random() * 10) == 0) {
-                                this2.map[i][j] = 0;
-                                this2.mapBehind[i][j] = 0;
+                                this2.map[i][j] = "BlockGrass";
+                                this2.mapBehind[i][j] = "BlockGrass";
                             }
                         }
                     }
@@ -1103,17 +1074,18 @@ const World = {
 // Генерация мира
 function generateMap(width = 100, height = 60) {
 
-    // Генерация
+    // Генерация 
+    World.timeWorld();
     World.generateWorld()[0](width, height);
     World.generateWorld()[6]();
     World.generateWorld()[1]();
-    World.generateWorld()[2]();
-    World.generateWorld()[3]();
-    World.generateWorld()[4]();
-    World.generateWorld()[5]();
-    World.upDate()[0]();
-    World.upDate()[1]();
-    World.timeWorld();
+    // World.generateWorld()[2]();
+    // World.generateWorld()[3]();
+    // World.generateWorld()[4]();
+    // World.generateWorld()[5]();
+    // World.upDate()[0]();
+    // World.upDate()[1]();
+   
 }
 
 
