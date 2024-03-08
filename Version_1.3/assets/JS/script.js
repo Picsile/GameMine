@@ -27,8 +27,14 @@ class Player {
     controlKeys = [];
     externalVariables = [];
     fallingSpeed = 0;
-    inventory = [];
-    currentItem = undefined;
+    inventory = [
+        {
+            'name': null,
+            'quantity': null
+        }
+    ];
+    currentItem = 0;
+    pageCheck = false;
 
 
     // Сформировать размеры игрока
@@ -44,7 +50,8 @@ class Player {
             document.getElementById(`player${this.playerNumber}AnimLeft`),
             document.getElementById(`player${this.playerNumber}AnimRight`),
             document.getElementById(`player${this.playerNumber}AnimUP`),
-            document.getElementById(`player${this.playerNumber}AnimDown`)
+            document.getElementById(`player${this.playerNumber}AnimDown`),
+            document.getElementById(`player${this.playerNumber}Invrntory`)
         ];
     }
 
@@ -56,8 +63,8 @@ class Player {
 
             if (this.side == 1 && this.cordX > 0) {
 
-                if (World.map[Math.round(this.cordY)][this.cordX - 1] == undefined || blocks[World.map[Math.round(this.cordY)][this.cordX - 1]]['collision'] == 0) {
-                    if (World.map[Math.round(this.cordY) - 1][this.cordX - 1] == undefined || blocks[World.map[Math.round(this.cordY) - 1][this.cordX - 1]]['collision'] == 0) {
+                if (World.map[Math.round(this.cordY)][this.cordX - 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY)][this.cordX - 1]]]['collision'] == false) {
+                    if (World.map[Math.round(this.cordY) - 1][this.cordX - 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY) - 1][this.cordX - 1]]]['collision'] == false) {
                         this.cordX -= 1;
                         this.upDatePlayer(1);
                     }
@@ -72,8 +79,8 @@ class Player {
         if (event == this.controlKeys[3]) {
 
             if (this.side == -1 && this.cordX < World.widthArray - 1) {
-                if (World.map[Math.round(this.cordY)][this.cordX + 1] == undefined || blocks[World.map[Math.round(this.cordY)][this.cordX + 1]]['collision'] == 0) {
-                    if (World.map[Math.round(this.cordY) - 1][this.cordX + 1] == undefined || blocks[World.map[Math.round(this.cordY) - 1][this.cordX + 1]]['collision'] == 0) {
+                if (World.map[Math.round(this.cordY)][this.cordX + 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY)][this.cordX + 1]]]['collision'] == false) {
+                    if (World.map[Math.round(this.cordY) - 1][this.cordX + 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY - 1)][this.cordX + 1]]]['collision'] == false) {
                         this.cordX += 1;
                         this.upDatePlayer(0);
                     }
@@ -89,7 +96,7 @@ class Player {
 
             if (this.cordY > 2) {
 
-                if ((World.map[Math.round(this.cordY - 2)][this.cordX] == undefined || blocks[World.map[Math.round(this.cordY - 2)][this.cordX]]['collision'] == 0) && World.map[Math.round(this.cordY) + 1][this.cordX] != undefined) {
+                if ((World.map[Math.round(this.cordY - 2)][this.cordX] == undefined || blocks[blockList[World.map[Math.round(this.cordY) - 2][this.cordX]]]['collision'] == false) && World.map[Math.round(this.cordY) + 1][this.cordX] != undefined) {
                     this.cordY -= 1;
                     this.upDatePlayer(2);
                 }
@@ -146,13 +153,13 @@ class Player {
         this.externalVariables[0].innerHTML = playerHTML;
 
         switch (varAnim) {
-            case 0: this.externalVariables[1].style.animation = 'MovementFront 0.1s ease-out';
+            case 0: this.externalVariables[1].style.animation = 'MovementFront 0.15s ease-out';
                 setTimeout(() => {
                     this.externalVariables[1].style.animation = '';
                     this.externalVariables[2].style.animation = '';
                 }, 150);
                 break;
-            case 1: this.externalVariables[2].style.animation = 'MovementBehind 0.1s ease-out';
+            case 1: this.externalVariables[2].style.animation = 'MovementBehind 0.15s ease-out';
                 setTimeout(() => {
                     this.externalVariables[1].style.animation = '';
                     this.externalVariables[2].style.animation = '';
@@ -173,10 +180,13 @@ class Player {
         }
 
         this.openDark();
+        this.checkBlockDown();
     }
 
     // Исследовать
     openDark() {
+        let res = false;
+
         for (let i = -3; i < 3; i++) {
             let x = -2;
 
@@ -192,6 +202,7 @@ class Player {
 
                     if (!((j == -2 || j == 2) && (i == -3 || i == 2))) {
                         if (World.mapDark[Math.round(this.cordY) + i][this.cordX + j] == 1) {
+                            res = true;
                             World.mapDark[Math.round(this.cordY) + i][this.cordX + j] = [];
                         }
                     }
@@ -199,209 +210,74 @@ class Player {
             }
         }
 
-        World.upDate()[0]();
+        (res) ? World.upDate()[0]() : null;
     }
 
-    // Проверка нижнего блока
+    // Падение
     checkBlockDown() {
+        if (this.pageCheck == false) {
+            this.pageCheck = true;
 
-        setTimeout(() => {
+            setTimeout(() => {
+                this.pageCheck = false;
 
-            if (World.map[Math.round(this.cordY) + 1][this.cordX] == undefined || blocks[World.map[Math.round(this.cordY) + 1][this.cordX]]['collision'] == 0) {
-                this.cordY += 1;
-                this.fallingSpeed++;
-                this.upDatePlayer(3);
-            }
+                if (World.map[Math.round(this.cordY) + 1][this.cordX] == undefined || blocks[blockList[World.map[Math.round(this.cordY) + 1][this.cordX]]]['collision'] == false) {
+                    this.cordY += 1;
+                    this.fallingSpeed++;
+                    this.upDatePlayer(3);
+                }
 
-            if (World.map[Math.round(this.cordY) + 1][this.cordX] != undefined) {
-                // здесь должен быть реализован урон от падения
-                this.fallingSpeed = 0;
-            }
-        }, 150);
+                if (World.map[Math.round(this.cordY) + 1][this.cordX] != undefined) {
+                    // здесь должен быть реализован урон от падения
+                    this.fallingSpeed = 0;
+                }
+            }, 130);
+        }
     }
 
-    // Добавить предмет в массив
+    // Добавить блоки в инвентарь
     addItemInInventory(Y, X) {
         let res = undefined;
-        for (let i = 0; i < this.inventory.length; i++) {
 
-            if (this.inventory[i]['src'] == blocks[blocks[World.map[Y][X]]['dropoutBlock']]['src']) {
+        // Определяем есть ли блок в инвенторе
+        for (let i = 0; i < this.inventory.length; i++) {
+            if (this.inventory[i]['name'] == blocks[blockList[World.map[Y][X]]]['dropBlock']) {
                 res = i;
             }
         };
 
-        if (res == undefined) {
+        // Проверка выпадения без инструмента и с ним
+        if (blocks[blockList[World.map[Y][X]]]['dropOutWithoutATool'] == true || (this.inventory[this.currentItem]['name'] == blocks[blockList[World.map[Y][X]]]['typeOfTool'])) {
 
-            this.inventory.push(blocks[blocks[World.map[Y][X]]['dropoutBlock']]);
-            this.inventory[this.inventory.length - 1]['quantity'] = 1;
+            if (res === undefined) {
+                // Добовляем блок
+                this.inventory.push({
+                    'name': blocks[blockList[World.map[Y][X]]]['dropBlock'],
+                    'quantity': 1
+                });
+            } else {
+                // Увеличиваем количество
+                this.inventory[res]['quantity'] += 1;
+            }
+        }
 
-        } else this.inventory[res]['quantity'] += 1;
+        if (this.currentItem == 0) {
+            this.currentItem == this.inventory.length;
+        }
+        this.upDateInventory();
     }
 
     // Вывод инвнтаря
     upDateInventory() {
-        if (this.currentItem == null) {
+        if (this.currentItem != 0) {
             if (this.inventory.length > 0) {
-                
+                this.externalVariables[5].innerHTML = `
+                <img src = "${blocks[this.inventory[this.currentItem]['name']]['src']}" width="81px" height="81px">
+                `;
             }
         }
     }
 }
-
-
-// Объекты задние блоки
-const blocksBehind = {
-    "BlockGrass": "assets/img/textures/Блок трава2.jpg",
-    "BlockDirt": "assets/img/textures/Блок грязь2.jpg",
-    "BlockStone": "assets/img/textures/Блок камень2.jpg",
-    "BlockBedrock": "assets/img/textures/Блок бедрок2.jpg"
-};
-
-
-// Объекты блоки
-const blocks = {
-    "BlockGrass": {
-        "src": "assets/img/textures/Блок трава.jpg",
-        "collision": true,
-        "flowability": false,
-        "breakingSpeed": 3.5,
-        "typeOfTool": "Shovel",
-        "dropOutWithoutATool": true,
-        "dropBlock": "BlockDirt"
-    },
-    "BlockDirt": {
-        "src": "assets/img/textures/Блок грязь.jpg",
-        "collision": true,
-        "flowability": false,
-        "breakingSpeed": 3.5,
-        "typeOfTool": "Shovel",
-        "dropOutWithoutATool": true,
-        "dropBlock": "BlockDirt"
-    },
-    "BlockGravel": {
-        "src": "assets/img/textures/Блок гравий.jpg",
-        "collision": true,
-        "flowability": true,
-        "breakingSpeed": 2.5,
-        "typeOfTool": "Shovel",
-        "blockFallingOutWithoutATool": true,
-        "dropBlock": "BlockGravel"
-    },
-    "BlockStone": {
-        "src": "assets/img/textures/Блок камень.jpg",
-        "collision": true,
-        "flowability": false,
-        "breakingSpeed": 1.6,
-        "typeOfTool": "Pick",
-        "dropOutWithoutATool": false,
-        "dropBlock": "BlockPebble"
-    },
-    "BlockPebble": {
-        "src": "assets/img/textures/Блок булыжник.jpg",
-        "collision": true,
-        "flowability": false,
-        "breakingSpeed": 1.6,
-        "typeOfTool": "Pick",
-        "dropOutWithoutATool": false,
-        "dropBlock": "BlockPebble"
-    },
-    "BlockBedrock": {
-        "src": "assets/img/textures/Блок бедрок.jpg",
-        "collision": true,
-        "flowability": false,
-        "breakingSpeed": 0,
-        "typeOfTool": null,
-        "dropOutWithoutATool": false,
-        "dropBlock": null
-    },
-    "BlockPlank": {
-        "src": "assets/img/textures/Блок доски.jpg",
-        "collision": true,
-        "flowability": false,
-        "breakingSpeed": 2,
-        "typeOfTool": "Axe",
-        "dropOutWithoutATool": true,
-        "dropBlock": "BlockPlank"
-    },
-    "BlockFence": {
-        "src": "assets/img/textures/Блок заборинка.png",
-        "collision": true,
-        "flowability": false,
-        "breakingSpeed": 2,
-        "typeOfTool": "Axe",
-        "dropOutWithoutATool": true,
-        "dropBlock": "BlockFence"
-    },
-    "Minecart": {
-        "src": "assets/img/textures/Вагонетка2.png",
-        "collision": false,
-        "flowability": false,
-        "breakingSpeed": "max",
-        "typeOfTool": "Pick",
-        "dropOutWithoutATool": true,
-        "dropBlock": "Minecart"
-    },
-    "BlockTorch": {
-        "src": "assets/img/textures/Факел наклонённый.gif",
-        "collision": false,
-        "flowability": false,
-        "breakingSpeed": "max",
-        "typeOfTool": null,
-        "dropOutWithoutATool": true,
-        "dropBlock": "Torch"
-    },
-    "BlockInvertedTorch": {
-        "src": "assets/img/textures/Факел наклонённый перевёрнутый.gif",
-        "collision": false,
-        "flowability": false,
-        "breakingSpeed": "max",
-        "typeOfTool": null,
-        "dropOutWithoutATool": true,
-        "dropBlock": "Torch"
-    },
-    "Rails": {
-        "src": "assets/img/textures/Рельсы.png",
-        "collision": false,
-        "flowability": false,
-        "breakingSpeed": 5,
-        "typeOfTool": "Pick",
-        "dropOutWithoutATool": true,
-        "dropBlock": "Rails"
-    },
-    "BlockStair": {
-        "src": "assets/img/textures/Блок ступенки.png",
-        "collision": true,
-        "flowability": false,
-        "breakingSpeed": 2,
-        "typeOfTool": "Axe",
-        "dropOutWithoutATool": true,
-        "dropBlock": "BlockInvertedStair"
-    },
-    "BlockInvertedStair": {
-        "src": "assets/img/textures/Блок ступеньки перевёрнутые.png",
-        "collision": true,
-        "flowability": false,
-        "breakingSpeed": 2,
-        "typeOfTool": "Axe",
-        "dropOutWithoutATool": true,
-        "dropBlock": "BlockStair"
-    }
-}
-
-
-// Объкты трещены
-const cracks = [
-    'assets/img/textures/Трещены уровень 1.png',
-    'assets/img/textures/Трещены уровень 2.png',
-    'assets/img/textures/Трещены уровень 3.png',
-    'assets/img/textures/Трещены уровень 4.png',
-    'assets/img/textures/Трещены уровень 5.png',
-    'assets/img/textures/Трещены уровень 6.png',
-    'assets/img/textures/Трещены уровень 7.png',
-    'assets/img/textures/Трещены уровень 8.png',
-    'assets/img/textures/Трещены уровень 9.png',
-    'assets/img/textures/Трещены уровень 10.png'
-];
 
 
 // Объект мир
@@ -421,7 +297,7 @@ const World = {
 
     //Изменения дкнь / ночь
     changeOfDay() {
-
+        console.log(true);
         if (this.time[0] == 'day') {
 
             document.getElementById('sky').style.animation = "colorNight 3s ease forwards";
@@ -445,7 +321,7 @@ const World = {
     // Управление временем 
     timeWorld() {
         setInterval(() => {
-            if (this.time[1] / 12000 == Math.floor(this.time[1] / 12000)) {
+            if (this.time[1] + 1 / 12000 == Math.floor(this.time[1] / 12000)) {
                 this.changeOfDay();
             }
             this.time[1]++;
@@ -503,23 +379,23 @@ const World = {
 
                                 // Увеличиваем шанс двойного блока
                                 if (!Math.floor(Math.random() * 5) == 0) {
-                                    this2.map[i][j] = "BlockGrass";
-                                    this2.mapBehind[i][j] = "BlockGrass";
+                                    this2.map[i][j] = 0;
+                                    this2.mapBehind[i][j] = 0;
                                 }
                             } else {
 
                                 // Как с 2 Первыми и последними
                                 if (Math.floor(Math.random() * 10) == 0) {
-                                    this2.map[i][j] = "BlockGrass";
-                                    this2.mapBehind[i][j] = "BlockGrass";
+                                    this2.map[i][j] = 0;
+                                    this2.mapBehind[i][j] = 0;
                                 }
                             }
                         } else {
 
                             // Для 2 первых
                             if (Math.floor(Math.random() * 10) == 0) {
-                                this2.map[i][j] = "BlockGrass";
-                                this2.mapBehind[i][j] = "BlockGrass";
+                                this2.map[i][j] = 0;
+                                this2.mapBehind[i][j] = 0;
                             }
                         }
                     }
@@ -963,7 +839,7 @@ const World = {
                 // Сравниваем координаты
                 if (this2.mapCracks[i]['Y'] == Y && this2.mapCracks[i]['X'] == X) {
 
-                    this2.mapCracks[i]['stage'] += blocks[this2.mapCracks[i]['block']]['strength'];
+                    this2.mapCracks[i]['stage'] += blocks[blockList[this2.map[Y][X]]]['breakingSpeed'];
 
                     // Проверяем степень поломки
                     if (this2.mapCracks[i]['stage'] >= 10) {
@@ -977,16 +853,15 @@ const World = {
             }
 
             // Если трещен на блоке нет
-            this2.mapCracks.push({
-                'Y': Y,
-                'X': X,
-                'block': this2.map[Y][X],
-                'stage': blocks[this2.map[Y][X]]['strength']
-            })
-
-            if (this2.mapCracks[this2.mapCracks.length - 1]['stage'] >= 10) {
-                this2.breakingBlocks(Y, X);
-                this2.mapCracks.splice(this2.mapCracks.length - 1, 1);
+            if (blocks[blockList[this2.map[Y][X]]]['breakingSpeed'] != 'max') {
+                this2.mapCracks.push({
+                    'Y': Y,
+                    'X': X,
+                    'block': this2.map[Y][X],
+                    'stage': blocks[blockList[this2.map[Y][X]]]['breakingSpeed']
+                })
+            } else {
+                breakingBlocks(Y, X, playerNumber);
             }
 
             this2.upDate()[2]();
@@ -1007,7 +882,6 @@ const World = {
             let mapCracksHTML = ``;
 
             for (let i = 0; i < this2.mapCracks.length; i++) {
-
                 mapCracksHTML += `<div class="block" style = "margin-top: ${this2.mapCracks[i]['Y'] * cellSize}px; margin-left: ${this2.mapCracks[i]['X'] * cellSize}px;"><img src = "${cracks[Math.round(this2.mapCracks[i]['stage']) - 1]}" width="${cellSize}px" height="${cellSize}px"></div>`;
             }
 
@@ -1027,14 +901,13 @@ const World = {
 
                         //  Проверка на передний блок
                         if (this2.map[i][j] != undefined) {
-                            mapHTML += `<div class="block" style = "margin-top: ${i * cellSize}px; margin-left: ${j * cellSize}px;"><img src = "${blocks[this2.map[i][j]]['src']}" width="${cellSize}px" height="${cellSize}px"></div>`;
+                            mapHTML += `<div class="block" style = "margin-top: ${i * cellSize}px; margin-left: ${j * cellSize}px;"><img src = "${blocks[blockList[this2.map[i][j]]]['src']}" width="${cellSize}px" height="${cellSize}px"></div>`;
                         }
 
                         // Проверка на задний блок  
-                        if (this2.mapBehind[i][j] != undefined && (this2.map[i][j] == undefined || blocks[this2.map[i][j]]['transparency'] == 1)) {
-                            mapBehindHTML += `<div class="block" style = "margin-top: ${i * cellSize}px; margin-left: ${j * cellSize}px;"><img src = "${blocksBehind[this2.mapBehind[i][j]]['src']}" width="${cellSize}px" height="${cellSize}px"></div>`;
+                        if (this2.mapBehind[i][j] != undefined && (this2.map[i][j] == undefined || blocks[blockList[this2.map[i][j]]]['src'].slice(-3) != 'jpg')) {
+                            mapBehindHTML += `<div class="block" style = "margin-top: ${i * cellSize}px; margin-left: ${j * cellSize}px;"><img src = "${blocksBehind[blockList[this2.mapBehind[i][j]]]}" width="${cellSize}px" height="${cellSize}px"></div>`;
                         }
-
                     }
                 }
             }
@@ -1055,7 +928,7 @@ const World = {
 
                 // Проверка на темноту
                 if (this2.mapDark[this2.mapFront[i]['Y']][this2.mapFront[i]['X']] != 1) {
-                    mapFrontHTML += `<div class="block" style = "margin-top: ${this2.mapFront[i]['Y'] * cellSize}px; margin-left: ${this2.mapFront[i]['X'] * cellSize}px;"><img src = "${blocks[this2.mapFront[i]['block']]['src']}" width="${cellSize}px" height="${cellSize}px"></div>`;
+                    mapFrontHTML += `<div class="block" style = "margin-top: ${this2.mapFront[i]['Y'] * cellSize}px; margin-left: ${this2.mapFront[i]['X'] * cellSize}px;"><img src = "${blocks[blockList[this2.mapFront[i]['block']]]['src']}" width="${cellSize}px" height="${cellSize}px"></div>`;
                 }
             }
 
@@ -1071,21 +944,209 @@ const World = {
 }
 
 
-// Генерация мира
-function generateMap(width = 100, height = 60) {
+// Объекты блоки
+const blocks = {
+    "BlockGrass": {
+        "src": "assets/img/textures/Блок трава.jpg",
+        "collision": true,
+        "flowability": false,
+        "breakingSpeed": 3.5,
+        "typeOfTool": "Shovel",
+        "dropOutWithoutATool": true,
+        "dropBlock": "BlockDirt"
+    },
+    "BlockDirt": {
+        "src": "assets/img/textures/Блок грязь.jpg",
+        "collision": true,
+        "flowability": false,
+        "breakingSpeed": 3.5,
+        "typeOfTool": "Shovel",
+        "dropOutWithoutATool": true,
+        "dropBlock": "BlockDirt"
+    },
+    "BlockGravel": {
+        "src": "assets/img/textures/Блок гравий.jpg",
+        "collision": true,
+        "flowability": true,
+        "breakingSpeed": 2.5,
+        "typeOfTool": "Shovel",
+        "blockFallingOutWithoutATool": true,
+        "dropBlock": "BlockGravel"
+    },
+    "BlockStone": {
+        "src": "assets/img/textures/Блок камень.jpg",
+        "collision": true,
+        "flowability": false,
+        "breakingSpeed": 1.6,
+        "typeOfTool": "Pick",
+        "dropOutWithoutATool": false,
+        "dropBlock": "BlockPebble"
+    },
+    "BlockPebble": {
+        "src": "assets/img/textures/Блок булыжник.jpg",
+        "collision": true,
+        "flowability": false,
+        "breakingSpeed": 1.6,
+        "typeOfTool": "Pick",
+        "dropOutWithoutATool": false,
+        "dropBlock": "BlockPebble"
+    },
+    "BlockBedrock": {
+        "src": "assets/img/textures/Блок бедрок.jpg",
+        "collision": true,
+        "flowability": false,
+        "breakingSpeed": 0,
+        "typeOfTool": null,
+        "dropOutWithoutATool": false,
+        "dropBlock": null
+    },
+    "BlockPlank": {
+        "src": "assets/img/textures/Блок доски.jpg",
+        "collision": true,
+        "flowability": false,
+        "breakingSpeed": 2,
+        "typeOfTool": "Axe",
+        "dropOutWithoutATool": true,
+        "dropBlock": "BlockPlank"
+    },
+    "BlockFence": {
+        "src": "assets/img/textures/Блок заборинка.png",
+        "collision": true,
+        "flowability": false,
+        "breakingSpeed": 2,
+        "typeOfTool": "Axe",
+        "dropOutWithoutATool": true,
+        "dropBlock": "BlockFence"
+    },
+    "Minecart": {
+        "src": "assets/img/textures/Вагонетка2.png",
+        "collision": false,
+        "flowability": false,
+        "breakingSpeed": "max",
+        "typeOfTool": "Pick",
+        "dropOutWithoutATool": true,
+        "dropBlock": "Minecart"
+    },
+    "BlockTorch": {
+        "src": "assets/img/textures/Факел наклонённый.gif",
+        "collision": false,
+        "flowability": false,
+        "breakingSpeed": "max",
+        "typeOfTool": null,
+        "dropOutWithoutATool": true,
+        "dropBlock": "Torch"
+    },
+    "BlockInvertedTorch": {
+        "src": "assets/img/textures/Факел наклонённый перевёрнутый.gif",
+        "collision": false,
+        "flowability": false,
+        "breakingSpeed": "max",
+        "typeOfTool": null,
+        "dropOutWithoutATool": true,
+        "dropBlock": "Torch"
+    },
+    "Rails": {
+        "src": "assets/img/textures/Рельсы.png",
+        "collision": false,
+        "flowability": false,
+        "breakingSpeed": 5,
+        "typeOfTool": "Pick",
+        "dropOutWithoutATool": true,
+        "dropBlock": "Rails"
+    },
+    "BlockStair": {
+        "src": "assets/img/textures/Блок ступенки.png",
+        "collision": true,
+        "flowability": false,
+        "breakingSpeed": 2,
+        "typeOfTool": "Axe",
+        "dropOutWithoutATool": true,
+        "dropBlock": "BlockInvertedStair"
+    },
+    "BlockInvertedStair": {
+        "src": "assets/img/textures/Блок ступеньки перевёрнутые.png",
+        "collision": true,
+        "flowability": false,
+        "breakingSpeed": 2,
+        "typeOfTool": "Axe",
+        "dropOutWithoutATool": true,
+        "dropBlock": "BlockStair"
+    }
+}
 
+
+// Объекты задние блоки
+const blocksBehind = {
+    "BlockGrass": "assets/img/textures/Блок трава2.jpg",
+    "BlockDirt": "assets/img/textures/Блок грязь2.jpg",
+    "BlockStone": "assets/img/textures/Блок камень2.jpg",
+    "BlockBedrock": "assets/img/textures/Блок бедрок2.jpg"
+};
+
+
+// Список проиндексированых блоков
+const blockList = {
+    "0": "BlockGrass",
+    "1": "BlockDirt",
+    "2": "BlockStone",
+    "3": "BlockBedrock",
+    "4": "BlockPlank",
+    "5": "BlockFence",
+    "6": "Minecart",
+    "7": "BlockTorch",
+    "8": "BlockInvertedTorch",
+    "9": "Rails",
+    "10": "BlockStair",
+    "11": "BlockInvertedStair",
+    "12": "BlockGravel",
+    "13": "BlockPebble"
+}
+
+
+// Объкты трещены
+const cracks = [
+    'assets/img/textures/Трещены уровень 1.png',
+    'assets/img/textures/Трещены уровень 2.png',
+    'assets/img/textures/Трещены уровень 3.png',
+    'assets/img/textures/Трещены уровень 4.png',
+    'assets/img/textures/Трещены уровень 5.png',
+    'assets/img/textures/Трещены уровень 6.png',
+    'assets/img/textures/Трещены уровень 7.png',
+    'assets/img/textures/Трещены уровень 8.png',
+    'assets/img/textures/Трещены уровень 9.png',
+    'assets/img/textures/Трещены уровень 10.png'
+];
+
+
+// Инструменты
+const tools = {
+    // "Shovel": {
+    //     "material": 
+    // },
+    // "Pick": {
+
+    // },
+    // "Axe": {
+
+    // }
+}
+
+
+// Генерация мира
+function generateMap(width = 100, height = 100) {
     // Генерация 
     World.timeWorld();
     World.generateWorld()[0](width, height);
     World.generateWorld()[6]();
     World.generateWorld()[1]();
-    // World.generateWorld()[2]();
-    // World.generateWorld()[3]();
-    // World.generateWorld()[4]();
-    // World.generateWorld()[5]();
-    // World.upDate()[0]();
-    // World.upDate()[1]();
-   
+    World.generateWorld()[2]();
+    World.generateWorld()[3]();
+    World.generateWorld()[4]();
+    World.generateWorld()[5]();
+
+    // Обновление
+    World.upDate()[1]();
+    World.upDate()[0]();
 }
 
 
@@ -1109,7 +1170,7 @@ generateMap();
 // Отслеживает действия игроков
 document.addEventListener('keydown', (event) => {
     event.preventDefault();
-    console.log(event.code);
+    // console.log(event.code);
 
     let currentCharacter = null;
 

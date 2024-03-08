@@ -1,13 +1,33 @@
-// Объекты задние блоки
-const blocksBehind = {
-    "BlockGrass": "assets/img/textures/Блок трава2.jpg",
-    "BlockDirt": "assets/img/textures/Блок грязь2.jpg",
-    "BlockStone": "assets/img/textures/Блок камень2.jpg",
-    "BlockBedrock": "assets/img/textures/Блок бедрок2.jpg"
-};
+const cracks = [
+    'assets/img/textures/Трещены уровень 1.png',
+    'assets/img/textures/Трещены уровень 2.png',
+    'assets/img/textures/Трещены уровень 3.png',
+    'assets/img/textures/Трещены уровень 4.png',
+    'assets/img/textures/Трещены уровень 5.png',
+    'assets/img/textures/Трещены уровень 6.png',
+    'assets/img/textures/Трещены уровень 7.png',
+    'assets/img/textures/Трещены уровень 8.png',
+    'assets/img/textures/Трещены уровень 9.png',
+    'assets/img/textures/Трещены уровень 10.png'
+];
 
+const blockList = {
+    "0": "BlockGrass",
+    "1": "BlockDirt",
+    "2": "BlockStone",
+    "3": "BlockBedrock",
+    "4": "BlockPlank",
+    "5": "BlockFence",
+    "6": "Minecart",
+    "7": "BlockTorch",
+    "8": "BlockInvertedTorch",
+    "9": "Rails",
+    "10": "BlockStair",
+    "11": "BlockInvertedStair",
+    "12": "BlockGravel",
+    "13": "BlockPebble"
+}
 
-// Объекты блоки
 const blocks = {
     "BlockGrass": {
         "src": "assets/img/textures/Блок трава.jpg",
