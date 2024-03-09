@@ -38,6 +38,7 @@ class Player {
     ];
     currentItem = 0;
     pageCheck = false;
+    state = 'alive';
 
 
     // Сформировать размеры игрока
@@ -55,100 +56,128 @@ class Player {
             document.getElementById(`player${this.playerNumber}AnimUP`),
             document.getElementById(`player${this.playerNumber}AnimDown`),
             document.getElementById(`player${this.playerNumber}Invrntory`),
-            document.getElementById(`player${this.playerNumber}satiety`),
-            document.getElementById(`player${this.playerNumber}health`)
+            document.getElementById(`player${this.playerNumber}Satiety`),
+            document.getElementById(`player${this.playerNumber}Health`),
+            document.getElementById(`player${this.playerNumber}Anim`)
         ];
+    }
+
+    // Получить урон
+    takeDamage(damage) {
+        this.health -= damage;
+        if (this.health / 10 < 1) {
+            this.dead();
+        } else {
+            this.externalVariables[0].innerHTML = `<img width="${this.width}" height="${this.height}" src = "${this.src}TakeDamage.png" style = "transform: scale(${this.side}, 1);">`;
+            setTimeout(() => {
+                this.upDate()[0]();
+            }, 100);
+        }
+        this.upDate()[2]();
     }
 
     // Умереть
     dead() {
-        this.cordX = this.startCordX;
-        this.cordY = this.startCordY;
-        this.health = 100;
-        this.upDate()[0]();
+        this.state = 'dead';
+        this.externalVariables[0].innerHTML = `<img width="${this.width}" height="${this.height}" src = "${this.src}TakeDamage.png" style = "transform: scale(${this.side}, 1);">`;
+        this.externalVariables[8].style.transform = 'rotate(90deg)';
+        setTimeout(() => {
+            this.state = 'alive';
+            this.health = 100;
+            this.cordX = this.startCordX;
+            this.cordY = this.startCordY;
+            this.externalVariables[8].style.transform = '';
+            this.upDate()[0]();
+            this.upDate()[2]();
+        }, 1000);
     }
 
     // Передвижение
     movement(event) {
+        if (this.state == 'alive') {
 
-        // Движение влево
-        if (event == this.controlKeys[2]) {
+            // Движение влево
+            if (event == this.controlKeys[2]) {
 
-            if (this.side == 1 && this.cordX > 0) {
+                if (this.side == 1 && this.cordX > 0) {
 
-                if (World.map[Math.round(this.cordY)][this.cordX - 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY)][this.cordX - 1]]]['collision'] == false) {
-                    if (World.map[Math.round(this.cordY) - 1][this.cordX - 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY) - 1][this.cordX - 1]]]['collision'] == false) {
-                        this.cordX -= 1;
-                        this.upDate()[0](1);
+                    if (World.map[Math.round(this.cordY)][this.cordX - 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY)][this.cordX - 1]]]['collision'] == false) {
+                        if (World.map[Math.round(this.cordY) - 1][this.cordX - 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY) - 1][this.cordX - 1]]]['collision'] == false) {
+                            this.cordX -= 1;
+                            this.upDate()[0](1);
+                        }
                     }
-                }
-            } else {
-                this.side = 1;
-                this.upDate()[0]();
-            }
-        }
-
-        // Движение вправо
-        if (event == this.controlKeys[3]) {
-
-            if (this.side == -1 && this.cordX < World.widthArray - 1) {
-                if (World.map[Math.round(this.cordY)][this.cordX + 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY)][this.cordX + 1]]]['collision'] == false) {
-                    if (World.map[Math.round(this.cordY) - 1][this.cordX + 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY - 1)][this.cordX + 1]]]['collision'] == false) {
-                        this.cordX += 1;
-                        this.upDate()[0](0);
-                    }
-                }
-            } else {
-                this.side = -1;
-                this.upDate()[0]();
-            }
-        }
-
-        // Прыжок
-        if (event == this.controlKeys[0]) {
-
-            if (this.cordY > 2) {
-
-                if ((World.map[Math.round(this.cordY - 2)][this.cordX] == undefined || blocks[blockList[World.map[Math.round(this.cordY) - 2][this.cordX]]]['collision'] == false) && World.map[Math.round(this.cordY) + 1][this.cordX] != undefined) {
-                    this.cordY -= 1;
-                    this.upDate()[0](2);
-                }
-            }
-        }
-
-        // Присед
-        if (event == this.controlKeys[1]) {
-
-            if (Math.round(this.cordY) == this.cordY) {
-                this.height = cellSize * 2 * 95 / 100;
-                this.cordY += cellSize * 2 / 700;
-                this.upDate()[0]();
-
-                setTimeout(() => {
-                    this.height = cellSize * 2;
-                    this.cordY = Math.round(this.cordY);
+                } else {
+                    this.side = 1;
                     this.upDate()[0]();
-                }, 100)
+                }
+            }
+
+            // Движение вправо
+            if (event == this.controlKeys[3]) {
+
+                if (this.side == -1 && this.cordX < World.widthArray - 1) {
+                    if (World.map[Math.round(this.cordY)][this.cordX + 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY)][this.cordX + 1]]]['collision'] == false) {
+                        if (World.map[Math.round(this.cordY) - 1][this.cordX + 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY - 1)][this.cordX + 1]]]['collision'] == false) {
+                            this.cordX += 1;
+                            this.upDate()[0](0);
+                        }
+                    }
+                } else {
+                    this.side = -1;
+                    this.upDate()[0]();
+                }
+            }
+
+            // Прыжок
+            if (event == this.controlKeys[0]) {
+
+                if (this.cordY > 2) {
+
+                    if ((World.map[Math.round(this.cordY - 2)][this.cordX] == undefined || blocks[blockList[World.map[Math.round(this.cordY) - 2][this.cordX]]]['collision'] == false) && World.map[Math.round(this.cordY) + 1][this.cordX] != undefined) {
+                        this.cordY -= 1;
+                        this.upDate()[0](2);
+                    }
+                }
+            }
+
+            // Присед
+            if (event == this.controlKeys[1]) {
+
+                if (Math.round(this.cordY) == this.cordY) {
+                    this.height = cellSize * 2 * 95 / 100;
+                    this.cordY += cellSize * 2 / 700;
+                    this.upDate()[0]();
+
+                    setTimeout(() => {
+                        this.height = cellSize * 2;
+                        this.cordY = Math.round(this.cordY);
+                        this.upDate()[0]();
+                    }, 100)
+                }
             }
         }
     }
 
     // Ломать
     breakBlock(event) {
-        if (event == this.controlKeys.slice(4, 5)) {
-            World.actions()[1](Math.round(this.cordY) - 2, this.cordX, this.playerNumber);
-        }
+        if (this.state == 'alive') {
 
-        if (event == this.controlKeys.slice(5, 6)) {
-            World.actions()[1](Math.round(this.cordY) + 1, this.cordX, this.playerNumber);
-        }
+            if (event == this.controlKeys.slice(4, 5)) {
+                World.actions()[1](Math.round(this.cordY) - 2, this.cordX, this.playerNumber);
+            }
 
-        if (event == this.controlKeys.slice(6, 7)) {
-            World.actions()[1](Math.round(this.cordY) - 1, this.cordX + this.side * (-1), this.playerNumber);
-        }
+            if (event == this.controlKeys.slice(5, 6)) {
+                World.actions()[1](Math.round(this.cordY) + 1, this.cordX, this.playerNumber);
+            }
 
-        if (event == this.controlKeys.slice(7, 8)) {
-            World.actions()[1](Math.round(this.cordY), this.cordX + this.side * (-1), this.playerNumber);
+            if (event == this.controlKeys.slice(6, 7)) {
+                World.actions()[1](Math.round(this.cordY) - 1, this.cordX + this.side * (-1), this.playerNumber);
+            }
+
+            if (event == this.controlKeys.slice(7, 8)) {
+                World.actions()[1](Math.round(this.cordY), this.cordX + this.side * (-1), this.playerNumber);
+            }
         }
     }
 
@@ -197,10 +226,7 @@ class Player {
                 } else {
 
                     if (this.fallingSpeed > 3) {
-                        console.log(true);
-                        this.health -= this.fallingSpeed * 4;
-                        (this.health/10 < 1) ? this.dead() : null;
-                        this.upDate()[2]()
+                        this.takeDamage(this.fallingSpeed * 4);
                     }
                     this.fallingSpeed = 0;
                 }
@@ -244,16 +270,9 @@ class Player {
         const this2 = this;
 
         function upDatePlayer(varAnim) {
-            let playerHTML = ``;
-
-            playerHTML += `
-                    <div style = "margin-top: ${this2.cordY * cellSize - cellSize}px; margin-left: ${this2.cordX * cellSize}px;">
-                    <div class="anim">
-                    <img width="${this2.width}" height="${this2.height}" src = "${this2.src}" style = "transform: scale(${this2.side}, 1);">
-                    </div>
-                    </div>`;
-
-            this2.externalVariables[0].innerHTML = playerHTML;
+            this2.externalVariables[8].style.marginTop = `${this2.cordY * cellSize - cellSize}px`;
+            this2.externalVariables[8].style.marginLeft = `${this2.cordX * cellSize}px`;
+            this2.externalVariables[0].innerHTML = `<img width="${this2.width}" height="${this2.height}" src = "${this2.src}.png" style = "transform: scale(${this2.side}, 1);">`;
 
             switch (varAnim) {
                 case 0: this2.externalVariables[1].style.animation = 'MovementFront 0.15s ease-out';
@@ -299,7 +318,7 @@ class Player {
         function upDateHealth() {
             let healthHTML = ``;
 
-            for (let i = 0; i < this2.health/10; i++) {
+            for (let i = 0; i < this2.health / 10; i++) {
                 healthHTML += `
                 <img src="assets/img/players/heart.png" alt="" width="32" height="32">
                 `;
@@ -1197,12 +1216,12 @@ players.push(new Player);
 players.push(new Player);
 
 players[0].playerNumber = 1;
-players[0].src = 'assets/img/players/Стив.png';
+players[0].src = 'assets/img/players/Steve';
 players[0].controlKeys = ['KeyW', 'KeyS', 'KeyA', 'KeyD', 'KeyT', 'KeyG', 'KeyY', 'KeyH', 'KeyQ', 'KeyE'];
 players[0].generateExternalVariables();
 
 players[1].playerNumber = 2;
-players[1].src = 'assets/img/players/Алекс.png';
+players[1].src = 'assets/img/players/Alex';
 players[1].controlKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Numpad5', 'Numpad2', 'Numpad6', 'Numpad3', 'Numpad4', 'Numpad1'];
 players[1].generateExternalVariables();
 

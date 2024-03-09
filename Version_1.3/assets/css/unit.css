@@ -87,10 +87,10 @@
     border: solid 2px rgb(123, 123, 123);
 }
 
-#player1satiety,
-#player1health,
-#player2satiety,
-#player2health {
+#player1Satiety,
+#player1Health,
+#player2Satiety,
+#player2Health {
     position: fixed;
     display: flex;
     left: 200px;
@@ -98,21 +98,21 @@
     width: 370px;
 }
 
-#player1satiety img,
-#player1health img,
-#player2satiety img,
-#player2health img {
+#player1Satiety img,
+#player1Health img,
+#player2Satiety img,
+#player2Health img {
     margin: 0 4px;
 }
 
-#player1health,
-#player2health {
+#player1Health,
+#player2Health {
     bottom: 105px;
 }
 
-#player2satiety,
-#player2health {
+#player2Satiety,
+#player2Health {
     justify-content: right;
     left: auto;
-    right: 255px;
+    right: 225px;
 }
