@@ -63,7 +63,8 @@
 
 /* Инвентари */
 
-.player1Invrntory {
+.player1Invrntory, 
+.player2Invrntory {
     position: fixed;
     left: 70px;
     bottom: 95px;
@@ -74,19 +75,44 @@
 }
 
 .player2Invrntory {
-    position: fixed;
+    left: auto;
     right: 95px;
-    bottom: 95px;
-    width: 120px;
-    height: 120px;
-
-    border: solid 2px rgb(76, 76, 76);
 }
 
 .inventoryFrame {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.659);
-    padding: 15px;
+    padding: 10px;
     border: solid 2px rgb(123, 123, 123);
+}
+
+#player1satiety,
+#player1health,
+#player2satiety,
+#player2health {
+    position: fixed;
+    display: flex;
+    left: 200px;
+    bottom: 150px;
+    width: 370px;
+}
+
+#player1satiety img,
+#player1health img,
+#player2satiety img,
+#player2health img {
+    margin: 0 4px;
+}
+
+#player1health,
+#player2health {
+    bottom: 105px;
+}
+
+#player2satiety,
+#player2health {
+    justify-content: right;
+    left: auto;
+    right: 255px;
 }

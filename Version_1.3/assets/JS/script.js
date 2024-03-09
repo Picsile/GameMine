@@ -16,10 +16,13 @@ const players = [];
 
 // Класс игрок
 class Player {
+    health = 100;
     playerNumber = null;
     src = '';
     cordX = 0;
     cordY = 0;
+    startCordX = 0;
+    startCordY = 0;
     width = cellSize;
     height = cellSize * 2;
     side = -1;
@@ -51,8 +54,18 @@ class Player {
             document.getElementById(`player${this.playerNumber}AnimRight`),
             document.getElementById(`player${this.playerNumber}AnimUP`),
             document.getElementById(`player${this.playerNumber}AnimDown`),
-            document.getElementById(`player${this.playerNumber}Invrntory`)
+            document.getElementById(`player${this.playerNumber}Invrntory`),
+            document.getElementById(`player${this.playerNumber}satiety`),
+            document.getElementById(`player${this.playerNumber}health`)
         ];
+    }
+
+    // Умереть
+    dead() {
+        this.cordX = this.startCordX;
+        this.cordY = this.startCordY;
+        this.health = 100;
+        this.upDate()[0]();
     }
 
     // Передвижение
@@ -66,12 +79,12 @@ class Player {
                 if (World.map[Math.round(this.cordY)][this.cordX - 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY)][this.cordX - 1]]]['collision'] == false) {
                     if (World.map[Math.round(this.cordY) - 1][this.cordX - 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY) - 1][this.cordX - 1]]]['collision'] == false) {
                         this.cordX -= 1;
-                        this.upDatePlayer(1);
+                        this.upDate()[0](1);
                     }
                 }
             } else {
                 this.side = 1;
-                this.upDatePlayer();
+                this.upDate()[0]();
             }
         }
 
@@ -82,12 +95,12 @@ class Player {
                 if (World.map[Math.round(this.cordY)][this.cordX + 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY)][this.cordX + 1]]]['collision'] == false) {
                     if (World.map[Math.round(this.cordY) - 1][this.cordX + 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY - 1)][this.cordX + 1]]]['collision'] == false) {
                         this.cordX += 1;
-                        this.upDatePlayer(0);
+                        this.upDate()[0](0);
                     }
                 }
             } else {
                 this.side = -1;
-                this.upDatePlayer();
+                this.upDate()[0]();
             }
         }
 
@@ -98,7 +111,7 @@ class Player {
 
                 if ((World.map[Math.round(this.cordY - 2)][this.cordX] == undefined || blocks[blockList[World.map[Math.round(this.cordY) - 2][this.cordX]]]['collision'] == false) && World.map[Math.round(this.cordY) + 1][this.cordX] != undefined) {
                     this.cordY -= 1;
-                    this.upDatePlayer(2);
+                    this.upDate()[0](2);
                 }
             }
         }
@@ -109,12 +122,12 @@ class Player {
             if (Math.round(this.cordY) == this.cordY) {
                 this.height = cellSize * 2 * 95 / 100;
                 this.cordY += cellSize * 2 / 700;
-                this.upDatePlayer();
+                this.upDate()[0]();
 
                 setTimeout(() => {
                     this.height = cellSize * 2;
                     this.cordY = Math.round(this.cordY);
-                    this.upDatePlayer();
+                    this.upDate()[0]();
                 }, 100)
             }
         }
@@ -137,50 +150,6 @@ class Player {
         if (event == this.controlKeys.slice(7, 8)) {
             World.actions()[1](Math.round(this.cordY), this.cordX + this.side * (-1), this.playerNumber);
         }
-    }
-
-    // Вывод игрока
-    upDatePlayer(varAnim) {
-        let playerHTML = ``;
-
-        playerHTML += `
-                <div style = "margin-top: ${this.cordY * cellSize - cellSize}px; margin-left: ${this.cordX * cellSize}px;">
-                <div class="anim">
-                <img width="${this.width}" height="${this.height}" src = "${this.src}" style = "transform: scale(${this.side}, 1);">
-                </div>
-                </div>`;
-
-        this.externalVariables[0].innerHTML = playerHTML;
-
-        switch (varAnim) {
-            case 0: this.externalVariables[1].style.animation = 'MovementFront 0.15s ease-out';
-                setTimeout(() => {
-                    this.externalVariables[1].style.animation = '';
-                    this.externalVariables[2].style.animation = '';
-                }, 150);
-                break;
-            case 1: this.externalVariables[2].style.animation = 'MovementBehind 0.15s ease-out';
-                setTimeout(() => {
-                    this.externalVariables[1].style.animation = '';
-                    this.externalVariables[2].style.animation = '';
-                }, 150);
-                break;
-            case 2: this.externalVariables[3].style.animation = 'MovementUp 0.1s ease-out';
-                setTimeout(() => {
-                    this.externalVariables[3].style.animation = '';
-                    this.externalVariables[4].style.animation = '';
-                }, 100);
-                break;
-            case 3: this.externalVariables[4].style.animation = 'MovementDown 0.1s ease-in';
-                setTimeout(() => {
-                    this.externalVariables[3].style.animation = '';
-                    this.externalVariables[4].style.animation = '';
-                }, 100);
-                break;
-        }
-
-        this.openDark();
-        this.checkBlockDown();
     }
 
     // Исследовать
@@ -224,11 +193,15 @@ class Player {
                 if (World.map[Math.round(this.cordY) + 1][this.cordX] == undefined || blocks[blockList[World.map[Math.round(this.cordY) + 1][this.cordX]]]['collision'] == false) {
                     this.cordY += 1;
                     this.fallingSpeed++;
-                    this.upDatePlayer(3);
-                }
+                    this.upDate()[0](3);
+                } else {
 
-                if (World.map[Math.round(this.cordY) + 1][this.cordX] != undefined) {
-                    // здесь должен быть реализован урон от падения
+                    if (this.fallingSpeed > 3) {
+                        console.log(true);
+                        this.health -= this.fallingSpeed * 4;
+                        (this.health/10 < 1) ? this.dead() : null;
+                        this.upDate()[2]()
+                    }
                     this.fallingSpeed = 0;
                 }
             }, 130);
@@ -236,23 +209,23 @@ class Player {
     }
 
     // Добавить блоки в инвентарь
-    addItemInInventory(Y, X) {
+    addItemInInventory(item) {
         let res = undefined;
 
         // Определяем есть ли блок в инвенторе
         for (let i = 0; i < this.inventory.length; i++) {
-            if (this.inventory[i]['name'] == blocks[blockList[World.map[Y][X]]]['dropBlock']) {
+            if (this.inventory[i]['name'] == item) {
                 res = i;
             }
         };
 
         // Проверка выпадения без инструмента и с ним
-        if (blocks[blockList[World.map[Y][X]]]['dropOutWithoutATool'] == true || (this.inventory[this.currentItem]['name'] == blocks[blockList[World.map[Y][X]]]['typeOfTool'])) {
+        if (blocks[item]['dropOutWithoutATool'] == true || (this.inventory[this.currentItem]['name'] == blocks[item]['typeOfTool'])) {
 
             if (res === undefined) {
                 // Добовляем блок
                 this.inventory.push({
-                    'name': blocks[blockList[World.map[Y][X]]]['dropBlock'],
+                    'name': blocks[item]['dropBlock'],
                     'quantity': 1
                 });
             } else {
@@ -262,20 +235,85 @@ class Player {
         }
 
         if (this.currentItem == 0) {
-            this.currentItem == this.inventory.length;
+            this.currentItem = this.inventory.length - 1;
         }
-        this.upDateInventory();
+        this.upDate()[1]();
     }
 
-    // Вывод инвнтаря
-    upDateInventory() {
-        if (this.currentItem != 0) {
-            if (this.inventory.length > 0) {
-                this.externalVariables[5].innerHTML = `
-                <img src = "${blocks[this.inventory[this.currentItem]['name']]['src']}" width="81px" height="81px">
+    upDate() {
+        const this2 = this;
+
+        function upDatePlayer(varAnim) {
+            let playerHTML = ``;
+
+            playerHTML += `
+                    <div style = "margin-top: ${this2.cordY * cellSize - cellSize}px; margin-left: ${this2.cordX * cellSize}px;">
+                    <div class="anim">
+                    <img width="${this2.width}" height="${this2.height}" src = "${this2.src}" style = "transform: scale(${this2.side}, 1);">
+                    </div>
+                    </div>`;
+
+            this2.externalVariables[0].innerHTML = playerHTML;
+
+            switch (varAnim) {
+                case 0: this2.externalVariables[1].style.animation = 'MovementFront 0.15s ease-out';
+                    setTimeout(() => {
+                        this2.externalVariables[1].style.animation = '';
+                        this2.externalVariables[2].style.animation = '';
+                    }, 150);
+                    break;
+                case 1: this2.externalVariables[2].style.animation = 'MovementBehind 0.15s ease-out';
+                    setTimeout(() => {
+                        this2.externalVariables[1].style.animation = '';
+                        this2.externalVariables[2].style.animation = '';
+                    }, 150);
+                    break;
+                case 2: this2.externalVariables[3].style.animation = 'MovementUp 0.1s ease-out';
+                    setTimeout(() => {
+                        this2.externalVariables[3].style.animation = '';
+                        this2.externalVariables[4].style.animation = '';
+                    }, 100);
+                    break;
+                case 3: this2.externalVariables[4].style.animation = 'MovementDown 0.1s ease-in';
+                    setTimeout(() => {
+                        this2.externalVariables[3].style.animation = '';
+                        this2.externalVariables[4].style.animation = '';
+                    }, 100);
+                    break;
+            }
+
+            this2.openDark();
+            this2.checkBlockDown();
+        };
+
+        function upDateInventory() {
+            setTimeout(() => {
+                if (this2.currentItem != 0) {
+                    this2.externalVariables[5].innerHTML = `
+                    <img src = "${blocks[this2.inventory[this2.currentItem]['name']]['src']}" width="92px" height="92px">
+                    `;
+                }
+            }, 100);
+        };
+
+        function upDateHealth() {
+            let healthHTML = ``;
+
+            for (let i = 0; i < this2.health/10; i++) {
+                healthHTML += `
+                <img src="assets/img/players/heart.png" alt="" width="32" height="32">
                 `;
             }
+
+            this2.externalVariables[7].innerHTML = healthHTML;
         }
+
+        return [
+            upDatePlayer,
+            upDateInventory,
+            // upDateSatiety,
+            upDateHealth
+        ];
     }
 }
 
@@ -798,12 +836,16 @@ const World = {
             for (let i = 0; i < this2.heightArray; i++) {
                 if (this2.map[i][Math.round(this2.widthArray / 30)] !== undefined && players[0]['cordY'] == 0) {
                     players[0]['cordY'] = i - 2;
+                    players[0]['startCordY'] = i - 2;
                     players[0]['cordX'] = Math.round(this2.widthArray / 30);
+                    players[0]['startCordX'] = Math.round(this2.widthArray / 30);
                 }
 
                 if (this2.map[i][Math.floor(this2.widthArray / 30 + 1)] !== undefined && players[1]['cordY'] == 0) {
                     players[1]['cordY'] = i - 2;
+                    players[1]['startCordY'] = i - 2;
                     players[1]['cordX'] = Math.floor(this2.widthArray / 30 + 1);
+                    players[1]['startCordX'] = Math.round(this2.widthArray / 30 + 1);
                 }
             }
         }
@@ -825,7 +867,7 @@ const World = {
 
         // Ломание блоков
         function breakingBlocks(Y, X, playerNumber) {
-            players[playerNumber - 1].addItemInInventory(Y, X);
+            players[playerNumber - 1].addItemInInventory(blocks[blockList[World.map[Y][X]]]['dropBlock']);
             this2.map[Y][X] = undefined;
             this2.upDate()[0]();
         }
@@ -1188,7 +1230,7 @@ document.addEventListener('keydown', (event) => {
             event.preventDefault();
             setTimeout(() => {
                 players[currentCharacter].movement(event.code);
-            }, 40);
+            }, 10);
         }
     }
 
@@ -1245,8 +1287,8 @@ gameDiv.addEventListener('wheel', (event) => {
 
         players[0].generatePlayerDimensions();
         players[1].generatePlayerDimensions();
-        players[0].upDatePlayer();
-        players[1].upDatePlayer();
+        players[0].upDate()[0]();
+        players[1].upDate()[0]();
 
         World.upDate()[0]();
         World.upDate()[2]();
