@@ -47,19 +47,48 @@
 <p>Numpad 3 - сломать блок на уровне ног перед собой</p>
 
 <!-- Version 1.3 -->
-изменена начальная высота спавна
-солнеце и луна передвинуты влево для наглядности
-добавлен класс Player, теперь созданее игроков происходит через него
-размер блока стал более адаптивный и теперь изначально равен 35.5 px
-стили и анимации разбиты на отдельные файлы
-игра сделана в виде игрового окна
-настроены размеры фонов
-Теперь у объекта мир есть время с начала создания мира, в милисекундах
-Был полнусть переделан массив блоков
-крассивые скролы
-Добавлены такие шкалы как сытость и здоровье 
-Добавлен урон от падения
+<br>
+<h2>Version 1.3</h2>
 
+<p><a href="https://picsile.github.io/GameMine/Version_1.3/index.html">Link to test</a></p>
+
+<p>Snapshots:</p>
+<img src="Version_1.3/snapshots/1.jpg" width="400" height="250"></img>
+<img src="Version_1.3/snapshots/2.jpg" width="400" height="250"></img>
+
+<h3>English</h3>
+<p>Changes:</p>
+<ul>
+    <li>The game now features a separate game window. It allows scrolling using scrollbars, and the block size within the window has become more adaptive (initially set to 35.5 px). Now, when scrolling the mouse wheel, you can zoom in and out of the world map, considering maximum zoom-in and zoom-out limitations. The world background adjusts automatically to match the map size.</li>
+    <li>Added player health bar to track their status. Currently, players can only take damage from falls, and reaching zero health results in death. The hunger bar is introduced for visual representation but does not affect gameplay yet.</li>
+</ul>
+<p>Other changes:</p>
+<ul>
+    <li>The 'world' object now stores information about the time since world creation in milliseconds. (Console command: World.time)</li>
+    <li>The block array has been reworked and now represents an associative array.</li>
+    <li>The sun and moon are now initially positioned to the left for better visualization at the beginning of the game.</li>
+    <li>Added the ability to change sea level by modifying a single variable in the code.</li>
+    <li>Introduced the 'Player' class for player creation, enriched with many new properties.</li>
+    <li>Styles for the website and game are separated into individual files. Player styles are isolated in a separate file.</li>
+    <li>HTML structure for unit animations has been revised.</li>
+</ul>
+<br>
+<h3>Русский</h3>
+<p>Крупные изменения:</p>
+<ul>
+    <li>Теперь игра представляет собой отдельное игровое окно. Оно обладает возможностью прокрутки с помощью скролов, а размер блока внутри окна стал более адаптивным (изначально равен 35.5 px). Теперь при прокрутке колёсика мыши можно приближать и отдалять карту мира, с учетом ограничений максимального приближения и отдаления. Фон мира автоматически подстраивается под размеры карты.</li>
+    <li>Добавлена шкала здоровья игрока, позволяющая отслеживать его состояние. В данный момент игрок может получать урон только от падений, и при нулевом здоровье может умереть. Шкала сытости введена для визуального представления, но пока не оказывает влияния на игровой процесс.</li>
+</ul>
+<p>Другие изменения:</p>
+<ul>
+    <li>Объект 'мир' хранит информацию о времени с момента создания в миллисекундах. (Команда в консоле: World.time)</li>
+    <li>Массив блоков был переработан и теперь представляет собой ассоциативный массив.</li>
+    <li>Солнце и луна теперь начально расположены левее для лучшей визуализации в начале игры.</li>
+    <li>Теперь есть возможность изменять высоту мера, меняя одну переменную в коде.</li>
+    <li>Введен класс 'Player', через который осуществляется создание игроков. У игрока появилось много новых свойств.</li>
+    <li>Стили для веб-сайта и стили для игры разделены на отдельные файлы. Стили для игроков вынесены в отдельный файл.</li>
+    <li>Также была переработана HTML конструкция для анимации юнитов.</li>
+</ul>
 
 <!-- Version 1.2 -->
 <br>
@@ -78,6 +107,7 @@
     <li>Day and night cycle: now a day and night cycle occurs every 2 minutes. The animations look as follows:</li>
     <li>Optimization: now only the block that is in the foreground or together with the background block (if the foreground block is transparent) is loaded in one cell. Also, only the blocks that the player loads or that are on the surface are displayed on the screen. Darkness is the furthest background.</li>
 </ul>
+<br>
 <p>Other changes:</p>
 <ul>
     <li>The world object has been divided into main functions: output, generation, and interaction.</li>

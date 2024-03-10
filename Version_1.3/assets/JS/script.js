@@ -16,30 +16,38 @@ const players = [];
 
 // Класс игрок
 class Player {
-    health = 100;
-    playerNumber = null;
-    src = '';
-    cordX = 0;
-    cordY = 0;
-    startCordX = 0;
-    startCordY = 0;
-    width = cellSize;
-    height = cellSize * 2;
-    side = -1;
-    shift = 0;
-    controlKeys = [];
-    externalVariables = [];
-    fallingSpeed = 0;
-    inventory = [
-        {
-            'name': null,
-            'quantity': null
-        }
-    ];
-    currentItem = 0;
-    pageCheck = false;
-    state = 'alive';
+    constructor(playerNumber, src, controlKeys) {
 
+        this.playerNumber = playerNumber;
+        this.src = src;
+        this.controlKeys = controlKeys;
+        this.externalVariables = [];
+
+        this.startCordX = 0;
+        this.startCordY = 0;
+        this.cordX = 0;
+        this.cordY = 0;
+
+        this.side = -1;
+        this.shift = 0;
+
+        this.width = cellSize;
+        this.height = cellSize * 2;
+
+        this.health = 100;
+
+        this.state = 'alive';
+        this.fallingSpeed = 0;
+        this.pageCheck = false;
+
+        this.inventory = [
+            {
+                'name': null,
+                'quantity': null
+            }
+        ];
+        this.currentItem = 0;
+    }
 
     // Сформировать размеры игрока
     generatePlayerDimensions() {
@@ -80,16 +88,20 @@ class Player {
     dead() {
         this.state = 'dead';
         this.externalVariables[0].innerHTML = `<img width="${this.width}" height="${this.height}" src = "${this.src}TakeDamage.png" style = "transform: scale(${this.side}, 1);">`;
+        this.externalVariables[8].style.transformOrigin = '60% 100%';
         this.externalVariables[8].style.transform = 'rotate(90deg)';
+        this.externalVariables[8].style.transition = 'all 0.2s';
         setTimeout(() => {
             this.state = 'alive';
             this.health = 100;
             this.cordX = this.startCordX;
             this.cordY = this.startCordY;
             this.externalVariables[8].style.transform = '';
+            this.externalVariables[8].style.transition = '';
+            
             this.upDate()[0]();
             this.upDate()[2]();
-        }, 1000);
+        }, 100000);
     }
 
     // Передвижение
@@ -318,7 +330,7 @@ class Player {
         function upDateHealth() {
             let healthHTML = ``;
 
-            for (let i = 0; i < this2.health / 10; i++) {
+            for (let i = 1; i < this2.health / 10; i++) {
                 healthHTML += `
                 <img src="assets/img/players/heart.png" alt="" width="32" height="32">
                 `;
@@ -1206,23 +1218,26 @@ function generateMap(width = 100, height = 100) {
     World.generateWorld()[5]();
 
     // Обновление
+    players[0].upDate()[2]();
+    players[1].upDate()[2]();
     World.upDate()[1]();
     World.upDate()[0]();
 }
 
 
 // Одноразовый код
-players.push(new Player);
-players.push(new Player);
-
-players[0].playerNumber = 1;
-players[0].src = 'assets/img/players/Steve';
-players[0].controlKeys = ['KeyW', 'KeyS', 'KeyA', 'KeyD', 'KeyT', 'KeyG', 'KeyY', 'KeyH', 'KeyQ', 'KeyE'];
+players.push(new Player(
+    1, 
+    'assets/img/players/Steve', 
+    ['KeyW', 'KeyS', 'KeyA', 'KeyD', 'KeyT', 'KeyG', 'KeyY', 'KeyH', 'KeyQ', 'KeyE']
+));
 players[0].generateExternalVariables();
 
-players[1].playerNumber = 2;
-players[1].src = 'assets/img/players/Alex';
-players[1].controlKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Numpad5', 'Numpad2', 'Numpad6', 'Numpad3', 'Numpad4', 'Numpad1'];
+players.push(new Player(
+    2, 
+    'assets/img/players/Alex', 
+    ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Numpad5', 'Numpad2', 'Numpad6', 'Numpad3', 'Numpad4', 'Numpad1']
+));
 players[1].generateExternalVariables();
 
 generateMap();
