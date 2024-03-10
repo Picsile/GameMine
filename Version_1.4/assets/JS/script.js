@@ -34,6 +34,7 @@ class Player {
         this.width = cellSize;
         this.height = cellSize * 2;
 
+        this.satiety = 100;
         this.health = 100;
 
         this.state = 'alive';
@@ -70,38 +71,93 @@ class Player {
         ];
     }
 
+    // Установить стандартные значения
+    setStartProperties() {
+        this.startCordX = 0;
+        this.startCordY = 0;
+
+        this.restoreStartAtribute();
+
+        this.inventory = [
+            {
+                'name': null,
+                'quantity': null
+            }
+        ];
+        this.currentItem = 0;
+    }
+
+    // Востановить атрибуты
+    restoreStartAtribute() {
+        this.cordX = this.startCordX;
+        this.cordY = this.startCordY;
+
+        this.side = -1;
+        this.shift = 0;
+
+        this.satiety = 100;
+        this.health = 100;
+
+        this.state = 'alive';
+        this.fallingSpeed = 0;
+        this.pageCheck = false;
+    }
+
+    // Голодание
+    reduceSatiety() {
+        if (this.state == 'alive') {
+
+            if (this.satiety > 0) {
+
+                this.satiety -= 10;
+                this.upDate()[2]();
+
+            } else {
+                this.takeDamage(5);
+
+                setTimeout(() => {
+                    this.reduceSatiety
+                }, 100);
+            }
+        }
+    }
+
     // Получить урон
     takeDamage(damage) {
         this.health -= damage;
-        if (this.health / 10 < 1) {
+        if (this.health < 1) {
+
             this.dead();
         } else {
+
             this.externalVariables[0].innerHTML = `<img width="${this.width}" height="${this.height}" src = "${this.src}TakeDamage.png" style = "transform: scale(${this.side}, 1);">`;
+
             setTimeout(() => {
                 this.upDate()[0]();
             }, 100);
         }
-        this.upDate()[2]();
+        this.upDate()[3]();
     }
 
     // Умереть
     dead() {
         this.state = 'dead';
+
         this.externalVariables[0].innerHTML = `<img width="${this.width}" height="${this.height}" src = "${this.src}TakeDamage.png" style = "transform: scale(${this.side}, 1);">`;
         this.externalVariables[8].style.transformOrigin = '60% 100%';
         this.externalVariables[8].style.transform = 'rotate(90deg)';
         this.externalVariables[8].style.transition = 'all 0.2s';
+
         setTimeout(() => {
-            this.state = 'alive';
-            this.health = 100;
-            this.cordX = this.startCordX;
-            this.cordY = this.startCordY;
+            this.restoreStartAtribute();
 
             this.externalVariables[8].style.transform = '';
             this.externalVariables[8].style.transition = '';
 
             this.upDate()[0]();
+            this.upDate()[1]();
             this.upDate()[2]();
+            this.upDate()[3]();
         }, 1000);
     }
 
@@ -320,13 +376,27 @@ class Player {
 
         function upDateInventory() {
             setTimeout(() => {
+
                 if (this2.currentItem != 0) {
                     this2.externalVariables[5].innerHTML = `
                     <img src = "${blocks[this2.inventory[this2.currentItem]['name']]['src']}" width="92px" height="92px">
                     `;
-                }
+                } else this2.externalVariables[5].innerHTML = '';
             }, 100);
         };
+
+        function upDateSatiety() {
+            let satietyHTML = ``;
+
+            if (this2.health / 10 > 0) {
+                for (let i = 0; i < this2.satiety / 10; i++) {
+                    satietyHTML += `
+                    <img src="assets/img/players/noodles.png" alt="" width="32" height="32">
+                    `;
+                }
+            }
+            this2.externalVariables[6].innerHTML = satietyHTML;
+        }
 
         function upDateHealth() {
             let healthHTML = ``;
@@ -344,7 +414,7 @@ class Player {
         return [
             upDatePlayer,
             upDateInventory,
-            // upDateSatiety,
+            upDateSatiety,
             upDateHealth
         ];
     }
@@ -364,9 +434,9 @@ const World = {
 
     startheight: 15,
 
-    time: ['day', 0],
+    time: ['day', 1],
 
-    //Изменения дкнь / ночь
+    // Изменение времени суток
     changeOfDay() {
         console.log(true);
         if (this.time[0] == 'day') {
@@ -389,12 +459,21 @@ const World = {
         }
     },
 
-    // Управление временем 
+    // Время
     timeWorld() {
         setInterval(() => {
-            if (this.time[1] + 1 / 12000 == Math.floor(this.time[1] / 12000)) {
+
+            // Смена дня и ночи
+            if (this.time[1] / 12000 == Math.floor(this.time[1] / 12000)) {
                 this.changeOfDay();
             }
+
+            // Голодание игроков со временем
+            if (this.time[1] / 3000 == Math.floor(this.time[1] / 3000)) {
+                players[0].reduceSatiety();
+                players[1].reduceSatiety();
+            }
+
             this.time[1]++;
         }, 10);
     },
@@ -863,8 +942,8 @@ const World = {
 
         // Генерация игроков
         function generatePlayers() {
-            players[0]['cordY'] = 0;
-            players[1]['cordY'] = 0;
+            players[0].setStartProperties();
+            players[1].setStartProperties();
 
             for (let i = 0; i < this2.heightArray; i++) {
                 if (this2.map[i][Math.round(this2.widthArray / 30)] !== undefined && players[0]['cordY'] == 0) {
@@ -1221,7 +1300,9 @@ function generateMap(width = 100, height = 100) {
 
     // Обновление
     players[0].upDate()[2]();
+    players[0].upDate()[3]();
     players[1].upDate()[2]();
+    players[1].upDate()[3]();
     World.upDate()[1]();
     World.upDate()[0]();
 }

@@ -87,13 +87,7 @@ class Player {
     // Умереть
     dead() {
         this.state = 'dead';
-        this.inventory = [
-            {
-                'name': null,
-                'quantity': null
-            }
-        ];
-        
+
         this.externalVariables[0].innerHTML = `<img width="${this.width}" height="${this.height}" src = "${this.src}TakeDamage.png" style = "transform: scale(${this.side}, 1);">`;
         this.externalVariables[8].style.transformOrigin = '60% 100%';
         this.externalVariables[8].style.transform = 'rotate(90deg)';
