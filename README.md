@@ -3,7 +3,19 @@
 <img src = "preview.jpg"></img>
 
 <div style = "margin: 15px 0 30px -20px">
-<a href="https://picsile.github.io/GameMine/Version_1.1/index.html" class="buttonTest">Link to latest version</a>
+<a href="https://picsile.github.io/GameMine/Version_1.1/index.html" style = "
+	background:linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
+	background-color:#79bbff;
+	border-radius: 8px;
+	border:2px solid #337bc4;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family: Trebuchet MS;
+	font-size:16px;
+	padding: 2px 8px;
+	text-decoration:none;
+    margin: 0 20px">Link to latest version</a>
 </div>
 
 <!-- Управление -->
@@ -53,7 +65,19 @@
 
 <!-- Version 1.3 -->
 <br>
-<h2>Version 1.3 <a href="https://picsile.github.io/GameMine/Version_1.1/index.html" class="buttonTest">Link to test</a></h2>
+<h2>Version 1.3 <a href="https://picsile.github.io/GameMine/Version_1.1/index.html" style = "
+	background:linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
+	background-color:#79bbff;
+	border-radius: 8px;
+	border:2px solid #337bc4;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family: Trebuchet MS;
+	font-size:16px;
+	padding: 2px 8px;
+	text-decoration:none;
+    margin: 0 20px">Link to test</a></h2>
 
 <p>Snapshots:</p>
 <img src="Version_1.3/snapshots/1.jpg" width="400" height="250"></img>
@@ -95,7 +119,19 @@
 
 <!-- Version 1.2 -->
 <br>
-<h2>Version 1.2 <a href="https://picsile.github.io/GameMine/Version_1.1/index.html" class="buttonTest">Link to test</a></h2>
+<h2>Version 1.2 <a href="https://picsile.github.io/GameMine/Version_1.1/index.html" style = "
+	background:linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
+	background-color:#79bbff;
+	border-radius: 8px;
+	border:2px solid #337bc4;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family: Trebuchet MS;
+	font-size:16px;
+	padding: 2px 8px;
+	text-decoration:none;
+    margin: 0 20px">Link to test</a></h2>
 
 <p>Snapshots:</p>
 <img src="Version_1.2/snapshots/Dark.png" width="400" height="350"></img>
@@ -133,7 +169,19 @@
 
 <!-- Version 1.1 -->
 <br>
-<h2>Version 1.1 <a href="https://picsile.github.io/GameMine/Version_1.1/index.html" class="buttonTest">Link to test</a></h2>
+<h2>Version 1.1 <a href="https://picsile.github.io/GameMine/Version_1.1/index.html" style = "
+	background:linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
+	background-color:#79bbff;
+	border-radius: 8px;
+	border:2px solid #337bc4;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family: Trebuchet MS;
+	font-size:16px;
+	padding: 2px 8px;
+	text-decoration:none;
+    margin: 0 20px">Link to test</a></h2>
 
 <h3>English</h3>
 <p>Changes:</p>
@@ -164,10 +212,22 @@
 
 <!-- Version 1 -->
 <br>
-<h2>Version 1 <a href="https://picsile.github.io/GameMine/Version_1.1/index.html" class="buttonTest">Link to test</a></h2>
+<h2>Version 1 <a href="https://picsile.github.io/GameMine/Version_1.1/index.html" style = "
+	background:linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
+	background-color:#79bbff;
+	border-radius: 8px;
+	border:2px solid #337bc4;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family: Trebuchet MS;
+	font-size:16px;
+	padding: 2px 8px;
+	text-decoration:none;
+    margin: 0 20px">Link to test</a></h2>
 
 
-<style>
+<!-- <style>
     .buttonTest {
 	background:linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
 	background-color:#79bbff;
@@ -192,4 +252,4 @@
 	position:relative;
 	top:1px;
 }
-</style>
+</style> -->
