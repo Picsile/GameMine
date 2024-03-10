@@ -3,7 +3,7 @@
 <img src = "preview.jpg"></img>
 
 <div style = "margin: 15px 0 30px -20px">
-<a href="https://picsile.github.io/GameMine/Version_1.1/index.html" style = "
+<a href="https://picsile.github.io/GameMine/Version_1.3/index.html" style = "
 	background:linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
 	background-color:#79bbff;
 	border-radius: 8px;
@@ -65,7 +65,7 @@
 
 <!-- Version 1.3 -->
 <br>
-<h2>Version 1.3 <a href="https://picsile.github.io/GameMine/Version_1.1/index.html" style = "
+<h2>Version 1.3 <a href="https://picsile.github.io/GameMine/Version_1.3/index.html" style = "
 	background:linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
 	background-color:#79bbff;
 	border-radius: 8px;
@@ -119,7 +119,7 @@
 
 <!-- Version 1.2 -->
 <br>
-<h2>Version 1.2 <a href="https://picsile.github.io/GameMine/Version_1.1/index.html" style = "
+<h2>Version 1.2 <a href="https://picsile.github.io/GameMine/Version_1.2/index.html" style = "
 	background:linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
 	background-color:#79bbff;
 	border-radius: 8px;
@@ -212,7 +212,7 @@
 
 <!-- Version 1 -->
 <br>
-<h2>Version 1 <a href="https://picsile.github.io/GameMine/Version_1.1/index.html" style = "
+<h2>Version 1 <a href="https://picsile.github.io/GameMine/Version_1/index.html" style = "
 	background:linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
 	background-color:#79bbff;
 	border-radius: 8px;
