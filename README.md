@@ -51,6 +51,20 @@
 <p>Numpad 6 - сломать блок на уровне головы перед собой</p>
 <p>Numpad 3 - сломать блок на уровне ног перед собой</p>
 
+<!-- Version 1.4 -->
+исправлен баг с неполной школой жизни
+
+
+
+теперь при смерти инвентарь ставновится пустым
+игрок может ставить блоки
+добавлены деревья
+трещены на блоках со временем очищаются
+шкала сытости со временем убывает
+движения также отнимают сытость
+игрок может переключаться между вещами в инвентаре
+
+
 <!-- Version 1.3 -->
 <br>
 <h2>Version 1.3 <a href="https://picsile.github.io/GameMine/Version_1.3/index.html" class="buttonTest">Link to test</a></h2>
@@ -166,7 +180,7 @@
 <br>
 <h2>Version 1 <a href="https://picsile.github.io/GameMine/Version_1/index.html" class="buttonTest">Link to test</a></h2>
 
-<style>
+<!-- <style>
     .buttonTest {
 	background:linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
 	background-color:#79bbff;
@@ -191,4 +205,4 @@
 	position:relative;
 	top:1px;
 }
-</style>
+</style> -->

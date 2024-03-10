@@ -87,13 +87,6 @@ class Player {
     // Умереть
     dead() {
         this.state = 'dead';
-        this.inventory = [
-            {
-                'name': null,
-                'quantity': null
-            }
-        ];
-        
         this.externalVariables[0].innerHTML = `<img width="${this.width}" height="${this.height}" src = "${this.src}TakeDamage.png" style = "transform: scale(${this.side}, 1);">`;
         this.externalVariables[8].style.transformOrigin = '60% 100%';
         this.externalVariables[8].style.transform = 'rotate(90deg)';
@@ -338,10 +331,12 @@ class Player {
         function upDateHealth() {
             let healthHTML = ``;
 
-            for (let i = 1; i < this2.health / 10; i++) {
-                healthHTML += `
+            if (this2.health / 10 > 0) {
+                for (let i = 0; i < this2.health / 10; i++) {
+                    healthHTML += `
                     <img src="assets/img/players/heart.png" alt="" width="32" height="32">
                     `;
+                }
             }
             this2.externalVariables[7].innerHTML = healthHTML;
         }
