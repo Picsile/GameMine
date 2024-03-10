@@ -96,6 +96,7 @@ class Player {
             this.health = 100;
             this.cordX = this.startCordX;
             this.cordY = this.startCordY;
+            
             this.externalVariables[8].style.transform = '';
             this.externalVariables[8].style.transition = '';
             

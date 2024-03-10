@@ -2,6 +2,10 @@
 <h3>Minecraft and Terraria Mashup</h3>
 <img src = "preview.jpg"></img>
 
+<div style = "margin: 15px 0 30px -20px">
+<a href="https://picsile.github.io/GameMine/Version_1.1/index.html" class="buttonTest">Link to latest version</a>
+</div>
+
 <!-- Управление -->
 <h2>English</h2>
 <h3>Controls for the first player:</h3>
@@ -23,6 +27,7 @@
 <p>Numpad 2 - break block below</p>
 <p>Numpad 6 - break block at head level in front</p>
 <p>Numpad 3 - break block at foot level in front</p>
+<br>
 
 <br>
 <h2>Русский</h2>
@@ -48,9 +53,7 @@
 
 <!-- Version 1.3 -->
 <br>
-<h2>Version 1.3</h2>
-
-<p><a href="https://picsile.github.io/GameMine/Version_1.3/index.html">Link to test</a></p>
+<h2>Version 1.3 <a href="https://picsile.github.io/GameMine/Version_1.1/index.html" class="buttonTest">Link to test</a></h2>
 
 <p>Snapshots:</p>
 <img src="Version_1.3/snapshots/1.jpg" width="400" height="250"></img>
@@ -92,9 +95,7 @@
 
 <!-- Version 1.2 -->
 <br>
-<h2>Version 1.2</h2>
-
-<p><a href="https://picsile.github.io/GameMine/Version_1.2/index.html">Link to test</a></p>
+<h2>Version 1.2 <a href="https://picsile.github.io/GameMine/Version_1.1/index.html" class="buttonTest">Link to test</a></h2>
 
 <p>Snapshots:</p>
 <img src="Version_1.2/snapshots/Dark.png" width="400" height="350"></img>
@@ -132,9 +133,7 @@
 
 <!-- Version 1.1 -->
 <br>
-<h2>Version 1.1</h2>
-
-<p><a href="https://picsile.github.io/GameMine/Version_1.1/index.html">Link to test</a></p>
+<h2>Version 1.1 <a href="https://picsile.github.io/GameMine/Version_1.1/index.html" class="buttonTest">Link to test</a></h2>
 
 <h3>English</h3>
 <p>Changes:</p>
@@ -165,6 +164,32 @@
 
 <!-- Version 1 -->
 <br>
-<h2>Version 1</h2>
+<h2>Version 1 <a href="https://picsile.github.io/GameMine/Version_1.1/index.html" class="buttonTest">Link to test</a></h2>
 
-<p><a href="https://picsile.github.io/GameMine/Version_1/index.html">Link to test</a></p>
+
+<style>
+    .buttonTest {
+	background:linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
+	background-color:#79bbff;
+	border-radius: 8px;
+	border:2px solid #337bc4;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family: Trebuchet MS;
+	font-size:16px;
+	padding: 2px 8px;
+	text-decoration:none;
+    margin-left: 20px
+}
+.buttonTest:hover {
+	background:linear-gradient(to bottom, #669ed6 5%, #2c6eb0 100%);
+	background-color:#378de5;
+    text-decoration:none;
+    color:#ffffff;
+}
+.buttonTest:active {
+	position:relative;
+	top:1px;
+}
+</style>
