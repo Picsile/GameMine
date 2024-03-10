@@ -101,7 +101,7 @@ class Player {
             
             this.upDate()[0]();
             this.upDate()[2]();
-        }, 100000);
+        }, 1000);
     }
 
     // Передвижение
