@@ -40,6 +40,8 @@ class Player {
         this.state = 'alive';
         this.fallingSpeed = 0;
         this.pageCheck = false;
+        this.satietyCheck = false;
+        this.jumpCheck = false;
 
         this.inventory = [
             {
@@ -101,24 +103,29 @@ class Player {
         this.state = 'alive';
         this.fallingSpeed = 0;
         this.pageCheck = false;
+        this.satietyCheck = false;
+        this.jumpCheck = false;
     }
 
     // Голодание
-    reduceSatiety() {
-        if (this.state == 'alive') {
+    reduceSatiety(calories) {
+        if (this.state == 'alive' && !this.satietyCheck) {
+            this.satietyCheck = true;
 
             if (this.satiety > 0) {
-
-                this.satiety -= 10;
-                this.upDate()[2]();
-
+                
+                this.satiety -= calories;
+                this.satietyCheck = false;
+                
             } else {
                 this.takeDamage(5);
 
                 setTimeout(() => {
-                    this.reduceSatiety
-                }, 100);
+                    this.satietyCheck = false;
+                    this.reduceSatiety(0);
+                }, 1000);
             }
+            this.upDate()[2]();
         }
     }
 
@@ -129,7 +136,6 @@ class Player {
 
             this.dead();
         } else {
-
             this.externalVariables[0].innerHTML = `<img width="${this.width}" height="${this.height}" src = "${this.src}TakeDamage.png" style = "transform: scale(${this.side}, 1);">`;
 
             setTimeout(() => {
@@ -164,6 +170,7 @@ class Player {
     // Передвижение
     movement(event) {
         if (this.state == 'alive') {
+            this.reduceSatiety(0.2);
 
             // Движение влево
             if (event == this.controlKeys[2]) {
@@ -201,11 +208,14 @@ class Player {
             // Прыжок
             if (event == this.controlKeys[0]) {
 
-                if (this.cordY > 2) {
+                if (this.cordY > 2 && !this.jumpCheck) {
 
                     if ((World.map[Math.round(this.cordY - 2)][this.cordX] == undefined || blocks[blockList[World.map[Math.round(this.cordY) - 2][this.cordX]]]['collision'] == false) && World.map[Math.round(this.cordY) + 1][this.cordX] != undefined) {
+                        this.jumpCheck = true;
                         this.cordY -= 1;
                         this.upDate()[0](2);
+
+                        setTimeout(() => this.jumpCheck = false, 220);
                     }
                 }
             }
@@ -231,6 +241,7 @@ class Player {
     // Ломать
     breakBlock(event) {
         if (this.state == 'alive') {
+            this.reduceSatiety(0.2);
 
             if (event == this.controlKeys.slice(4, 5)) {
                 World.actions()[1](Math.round(this.cordY) - 2, this.cordX, this.playerNumber);
@@ -282,7 +293,7 @@ class Player {
 
     // Падение
     checkBlockDown() {
-        if (this.pageCheck == false) {
+        if (!this.pageCheck) {
             this.pageCheck = true;
 
             setTimeout(() => {
@@ -290,6 +301,7 @@ class Player {
 
                 if (World.map[Math.round(this.cordY) + 1][this.cordX] == undefined || blocks[blockList[World.map[Math.round(this.cordY) + 1][this.cordX]]]['collision'] == false) {
                     this.cordY += 1;
+                    // (World.map[this.cordY - 2][this.cordX] != undefined) ? 
                     this.fallingSpeed++;
                     this.upDate()[0](3);
                 } else {
@@ -314,9 +326,6 @@ class Player {
             }
         };
 
-        // Проверка выпадения без инструмента и с ним
-        if (blocks[item]['dropOutWithoutATool'] == true || (this.inventory[this.currentItem]['name'] == blocks[item]['typeOfTool'])) {
-
             if (res === undefined) {
                 // Добовляем блок
                 this.inventory.push({
@@ -327,7 +336,6 @@ class Player {
                 // Увеличиваем количество
                 this.inventory[res]['quantity'] += 1;
             }
-        }
 
         if (this.currentItem == 0) {
             this.currentItem = this.inventory.length - 1;
@@ -335,6 +343,22 @@ class Player {
         this.upDate()[1]();
     }
 
+    // свап инвентаря
+    swapInventory(event) {
+        if (this.state == 'alive') {
+        
+            if (event == this.controlKeys.slice(8, 9)) {
+                this.currentItem = (this.currentItem == 0) ? this.inventory.length-1 : this.currentItem - 1;
+            }
+
+            if (event == this.controlKeys.slice(9, 10)) {
+                this.currentItem = (this.currentItem == this.inventory.length - 1) ? 0 : this.currentItem + 1;
+            }
+            this.upDate()[1]();
+        }
+    }
+
+    // Вывод
     upDate() {
         const this2 = this;
 
@@ -388,7 +412,7 @@ class Player {
         function upDateSatiety() {
             let satietyHTML = ``;
 
-            if (this2.health / 10 > 0) {
+            if (this2.satiety / 10 > 0) {
                 for (let i = 0; i < this2.satiety / 10; i++) {
                     satietyHTML += `
                     <img src="assets/img/players/noodles.png" alt="" width="32" height="32">
@@ -423,18 +447,20 @@ class Player {
 
 // Объект мир
 const World = {
-    map: [],
+
+    mapDark: [],
     mapBehind: [],
+    map: [],
     mapFront: [],
     mapCracks: [],
-    mapDark: [],
-
+    
     widthArray: 0,
     heightArray: 0,
-
     startheight: 15,
 
     time: ['day', 1],
+    clearCracks: false,
+
 
     // Изменение времени суток
     changeOfDay() {
@@ -470,8 +496,8 @@ const World = {
 
             // Голодание игроков со временем
             if (this.time[1] / 3000 == Math.floor(this.time[1] / 3000)) {
-                players[0].reduceSatiety();
-                players[1].reduceSatiety();
+                players[0].reduceSatiety(10);
+                players[1].reduceSatiety(10);
             }
 
             this.time[1]++;
@@ -950,14 +976,14 @@ const World = {
                     players[0]['cordY'] = i - 2;
                     players[0]['startCordY'] = i - 2;
                     players[0]['cordX'] = Math.round(this2.widthArray / 30);
-                    players[0]['startCordX'] = Math.round(this2.widthArray / 30);
+                    players[0]['startCordX'] = players[0]['cordX'];
                 }
 
                 if (this2.map[i][Math.floor(this2.widthArray / 30 + 1)] !== undefined && players[1]['cordY'] == 0) {
                     players[1]['cordY'] = i - 2;
                     players[1]['startCordY'] = i - 2;
                     players[1]['cordX'] = Math.floor(this2.widthArray / 30 + 1);
-                    players[1]['startCordX'] = Math.round(this2.widthArray / 30 + 1);
+                    players[1]['startCordX'] = players[1]['cordX'];
                 }
             }
         }
@@ -979,7 +1005,13 @@ const World = {
 
         // Ломание блоков
         function breakingBlocks(Y, X, playerNumber) {
-            players[playerNumber - 1].addItemInInventory(blocks[blockList[World.map[Y][X]]]['dropBlock']);
+            const item = blocks[blockList[World.map[Y][X]]];
+
+            // Проверка выпадения без инструмента и с ним
+            if (item['dropOutWithoutATool'] == true || (players[playerNumber - 1].inventory[players[playerNumber - 1].currentItem]['name'] == item['typeOfTool'])) {
+                players[playerNumber - 1].addItemInInventory(item['dropBlock']);
+            }
+
             this2.map[Y][X] = undefined;
             this2.upDate()[0]();
         }
@@ -994,6 +1026,7 @@ const World = {
                 if (this2.mapCracks[i]['Y'] == Y && this2.mapCracks[i]['X'] == X) {
 
                     this2.mapCracks[i]['stage'] += blocks[blockList[this2.map[Y][X]]]['breakingSpeed'];
+                    this2.mapCracks[i]['holdingTime'] = 3;
 
                     // Проверяем степень поломки
                     if (this2.mapCracks[i]['stage'] >= 10) {
@@ -1012,13 +1045,38 @@ const World = {
                     'Y': Y,
                     'X': X,
                     'block': this2.map[Y][X],
-                    'stage': blocks[blockList[this2.map[Y][X]]]['breakingSpeed']
+                    'stage': blocks[blockList[this2.map[Y][X]]]['breakingSpeed'],
+                    'holdingTime': 3
                 })
             } else {
                 breakingBlocks(Y, X, playerNumber);
             }
 
-            this2.upDate()[2]();
+            this2.upDate()[2]();    
+            clearCracks();
+        }
+
+        // Очистка трещен
+        function clearCracks() {
+            
+            if (this2.mapCracks.length > 0 && this2.clearCracks == false) {
+                this2.clearCracks = true;
+
+                setTimeout(() => {
+                
+                 for (let i = 0; i < this2.mapCracks.length; i++) {
+                    if (this2.mapCracks[i]['holdingTime'] > 1) {
+                        this2.mapCracks[i]['holdingTime'] -= 1;
+                    } else {
+                        this2.mapCracks.splice(i, 1);
+                        this2.upDate()[2]();       
+                    }
+                }   
+                
+                this2.clearCracks = false;
+                clearCracks();
+                }, 400);         
+            }
         }
 
         return [
@@ -1030,17 +1088,6 @@ const World = {
     // Вывод
     upDate() {
         const this2 = this;
-
-        // Вывод трещин на блоках
-        function upDateCracks() {
-            let mapCracksHTML = ``;
-
-            for (let i = 0; i < this2.mapCracks.length; i++) {
-                mapCracksHTML += `<div class="block" style = "margin-top: ${this2.mapCracks[i]['Y'] * cellSize}px; margin-left: ${this2.mapCracks[i]['X'] * cellSize}px;"><img src = "${cracks[Math.round(this2.mapCracks[i]['stage']) - 1]}" width="${cellSize}px" height="${cellSize}px"></div>`;
-            }
-
-            cracksDiv.innerHTML = mapCracksHTML;
-        }
 
         // Вывод блоков
         function upDateMap() {
@@ -1087,6 +1134,17 @@ const World = {
             }
 
             blocksFrontDiv.innerHTML = mapFrontHTML;
+        }
+
+        // Вывод трещин на блоках
+        function upDateCracks() {
+            let mapCracksHTML = ``;
+
+            for (let i = 0; i < this2.mapCracks.length; i++) {
+                mapCracksHTML += `<div class="block" style = "margin-top: ${this2.mapCracks[i]['Y'] * cellSize}px; margin-left: ${this2.mapCracks[i]['X'] * cellSize}px;"><img src = "${cracks[Math.round(this2.mapCracks[i]['stage']) - 1]}" width="${cellSize}px" height="${cellSize}px"></div>`;
+            }
+
+            cracksDiv.innerHTML = mapCracksHTML;
         }
 
         return [
@@ -1300,8 +1358,8 @@ function generateMap(width = 100, height = 100) {
 
     // Обновление
     players[0].upDate()[2]();
-    players[0].upDate()[3]();
     players[1].upDate()[2]();
+    players[0].upDate()[3]();
     players[1].upDate()[3]();
     World.upDate()[1]();
     World.upDate()[0]();
@@ -1319,7 +1377,7 @@ players[0].generateExternalVariables();
 players.push(new Player(
     2,
     'assets/img/players/Alex',
-    ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Numpad5', 'Numpad2', 'Numpad6', 'Numpad3', 'Numpad4', 'Numpad1']
+    ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Numpad5', 'Numpad2', 'Numpad6', 'Numpad3', 'Delete', 'PageDown']
 ));
 players[1].generateExternalVariables();
 
@@ -1329,7 +1387,7 @@ generateMap();
 // Отслеживает действия игроков
 document.addEventListener('keydown', (event) => {
     event.preventDefault();
-    // console.log(event.code);
+    console.log(event.code);
 
     let currentCharacter = null;
 
@@ -1347,7 +1405,7 @@ document.addEventListener('keydown', (event) => {
             event.preventDefault();
             setTimeout(() => {
                 players[currentCharacter].movement(event.code);
-            }, 10);
+            }, 30);
         }
     }
 
@@ -1383,8 +1441,19 @@ document.addEventListener('keydown', (event) => {
                     }
                 }
 
-            }, 40)
+            }, 30);
         }
+    }
+
+    // свапнуть инвентарь
+    if (currentCharacter != null) {
+
+            if (players[currentCharacter]['controlKeys'].slice(8, 10).includes(event.code)) {
+                event.preventDefault();
+                setTimeout(() => {
+                    players[currentCharacter].swapInventory(event.code);
+                }, 30);
+            }
     }
 });
 
