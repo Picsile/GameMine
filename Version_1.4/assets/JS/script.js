@@ -1387,7 +1387,7 @@ generateMap();
 // Отслеживает действия игроков
 document.addEventListener('keydown', (event) => {
     event.preventDefault();
-    console.log(event.code);
+    // console.log(event.code);
 
     let currentCharacter = null;
 
