@@ -17,6 +17,7 @@
 <p>G - break block below</p>
 <p>Y - break block at head level in front</p>
 <p>H - break block at foot level in front</p>
+<p>Q / E - switch inventory left and right</p>
 <br>
 <h3>Controls for the second player:</h3>
 <p>ArrowLeft - move left</p>
@@ -27,7 +28,7 @@
 <p>Numpad 2 - break block below</p>
 <p>Numpad 6 - break block at head level in front</p>
 <p>Numpad 3 - break block at foot level in front</p>
-<br>
+<p>Delete / PageDown - switch inventory left and right</p>
 
 <br>
 <h2>Русский</h2>
@@ -40,6 +41,7 @@
 <p>G - сломать блок под собой</p>
 <p>Y - сломать блок на уровне головы перед собой</p>
 <p>H - сломать блок на уровне ног перед собой</p>
+<p>Q / E - переключение инвентаря влево и вправо</p>
 <br>
 <h3>Управление для второго игрока:</h3>
 <p>ArrowLeft - шаг в лево</p>
@@ -50,21 +52,62 @@
 <p>Numpad 2 - сломать блок под собой</p>
 <p>Numpad 6 - сломать блок на уровне головы перед собой</p>
 <p>Numpad 3 - сломать блок на уровне ног перед собой</p>
+<p>Delete / PageDown - переключение инвентаря влево и вправо</p>
+
 
 <!-- Version 1.4 -->
-исправлен баг с неполной школой жизни
-теперь при смерти инвентарь ставновится пустым
-исправлен баг с сменой дня и ночи
-шкала сытости со временем убывает
-трещены на блоках со временем очищаются
-движения также отнимают сытость
-игрок может переключаться между вещами в инвентаре
-игрок может ставить блоки
-добавлены деревья
+<br>
+<h2>Version 1.4 <a href="https://picsile.github.io/GameMine/Version_1.4/index.html" class="buttonTest">Link to test</a></h2>
 
-фикс бага с инвентарём
-убрать систему массивов
+<p>Snapshots:</p>
+<img src="Version_1.4/snapshots/1.jpg" width="400" height="285"></img>
+<img src="Version_1.4/snapshots/2.gif" width="400" height="230"></img>
 
+<h3>English</h3>
+<p>Major changes:</p>
+<ul>
+    <li>Added ability to deal damage to another player.</li>
+    <li>Added hunger bar, which decreases over time. When hunger is above 50%, player health regenerates while hunger decreases. Movement, breaking, and building also consume hunger.</li>
+    <li>Added tree generation.</li>
+    <li>Players can now place blocks.</li>
+</ul>
+
+<p>Other changes:</p>
+<ul>
+    <li>Player can switch between items in inventory.</li>
+    <li>Added display of block count.</li>
+    <li>Cracks on blocks now clear over time.</li>
+</ul>
+
+<p>Bug Fixes:</p>
+<ul>
+    <li>Fixed issue with incomplete health bar.</li>
+    <li>Fixed bug with constant time of day.</li>
+    <li>Inventory now clears upon death.</li>
+</ul>
+
+<h3>Русский</h3>
+<p>Крупные изменения:</p>
+<ul>
+    <li>Добавлена возможность наносить урон другому игроку.</li>
+    <li>Добавлена шкала сытости, которая убывает со временем. Когда сытость превышает 50%, здоровье игрока восстанавливается, а сытость уменьшается. Движение, разрушение и строительство также уменьшают сытость.</li>
+    <li>Добавлена генерация деревьев.</li>
+    <li>Теперь игроки могут ставить блоки.</li>
+</ul>
+
+<p>Другие изменения:</p>
+<ul>
+    <li>Игрок может переключаться между предметами в инвентаре.</li>
+    <li>Добавлено отображение количества блоков.</li>
+    <li>Трещины на блоках исчезают со временем.</li>
+</ul>
+
+<p>Исправления ошибок:</p>
+<ul>
+    <li>Исправлена проблема с неполной шкалой здоровья.</li>
+    <li>Исправлена проблема с постоянным временем суток.</li>
+    <li>Инвентарь теперь очищается при смерти игрока.</li>
+</ul>
 
 
 <!-- Version 1.3 -->
@@ -76,7 +119,7 @@
 <img src="Version_1.3/snapshots/2.jpg" width="400" height="250"></img>
 
 <h3>English</h3>
-<p>Changes:</p>
+<p>Major changes:</p>
 <ul>
     <li>The game now features a separate game window. It allows scrolling using scrollbars, and the block size within the window has become more adaptive (initially set to 35.5 px). Now, when scrolling the mouse wheel, you can zoom in and out of the world map, considering maximum zoom-in and zoom-out limitations. The world background adjusts automatically to match the map size.</li>
     <li>Added player health bar to track their status. Currently, players can only take damage from falls, and reaching zero health results in death. The hunger bar is introduced for visual representation but does not affect gameplay yet.</li>
@@ -118,7 +161,7 @@
 <img src="Version_1.2/snapshots/change of day.gif" width="400" height="250"></img>
 
 <h3>English</h3>
-<p>Changes:</p>
+<p>Major changes:</p>
 <ul>
     <li>Darkness: now players will gradually reveal sections of the map to see what lies behind them.</li>
     <li>Day and night cycle: now a day and night cycle occurs every 2 minutes. The animations look as follows:</li>
@@ -152,7 +195,7 @@
 <h2>Version 1.1 <a href="https://picsile.github.io/GameMine/Version_1.1/index.html" class="buttonTest">Link to test</a></h2>
 
 <h3>English</h3>
-<p>Changes:</p>
+<p>Major changes:</p>
 <ul>
     <li>Added durability to each block, now breaking blocks requires multiple clicks.</li>
     <li>Code has been split into objects.</li>

@@ -79,14 +79,6 @@ class Player {
         this.startCordY = 0;
 
         this.restoreStartAtribute();
-
-        this.inventory = [
-            {
-                'name': null,
-                'quantity': null
-            }
-        ];
-        this.currentItem = 0;
     }
 
     // Востановить атрибуты
@@ -97,14 +89,22 @@ class Player {
         this.side = -1;
         this.shift = 0;
 
+        this.state = 'alive';
         this.satiety = 100;
         this.health = 100;
 
-        this.state = 'alive';
         this.fallingSpeed = 0;
         this.pageCheck = false;
         this.satietyCheck = false;
         this.jumpCheck = false;
+
+        this.inventory = [
+            {
+                'name': null,
+                'quantity': null
+            }
+        ];
+        this.currentItem = 0;
     }
 
     // Голодание
@@ -129,6 +129,45 @@ class Player {
         }
     }
 
+    // Оттолкнуться
+    pushOff(side) {
+
+        // Движение влево
+        if (side == 1) {
+            if (this.cordX > 0) {
+
+                if (World.map[Math.round(this.cordY)][this.cordX - 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY)][this.cordX - 1] % 100]]['collision'] == false) {
+                    if (World.map[Math.round(this.cordY) - 1][this.cordX - 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY) - 1][this.cordX - 1] % 100]]['collision'] == false) {
+                        this.cordX -= 1;
+                        this.upDate()[0](1);
+                    }
+                }
+            }
+        }
+
+        // Движение вправо
+        if (side == -1) {
+            if (this.cordX < World.widthArray - 1) {
+
+                if (World.map[Math.round(this.cordY)][this.cordX + 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY)][this.cordX + 1] % 100]]['collision'] == false) {
+                    if (World.map[Math.round(this.cordY) - 1][this.cordX + 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY - 1)][this.cordX + 1] % 100]]['collision'] == false) {
+                        this.cordX += 1;
+                        this.upDate()[0](0);
+                    }
+                }
+            }
+        }
+    }
+
+    // регенерация
+    pegeneration() {
+        if (this.satiety > 50 && this.health + 10 < 100) {
+            this.reduceSatiety(10);
+            this.health += 10;
+            this.upDate()[3]();
+        }
+    }
+
     // Получить урон
     takeDamage(damage) {
         this.health -= damage;
@@ -147,38 +186,40 @@ class Player {
 
     // Умереть
     dead() {
-        this.state = 'dead';
+        if (this.state == 'alive') {
+            this.state = 'dead';
 
-        this.externalVariables[0].innerHTML = `<img width="${this.width}" height="${this.height}" src = "${this.src}TakeDamage.png" style = "transform: scale(${this.side}, 1);">`;
-        this.externalVariables[8].style.transformOrigin = '60% 100%';
-        this.externalVariables[8].style.transform = 'rotate(90deg)';
-        this.externalVariables[8].style.transition = 'all 0.2s';
+            this.externalVariables[0].innerHTML = `<img width="${this.width}" height="${this.height}" src = "${this.src}TakeDamage.png" style = "transform: scale(${this.side}, 1);">`;
+            this.externalVariables[8].style.transformOrigin = '60% 100%';
+            this.externalVariables[8].style.transform = 'rotate(90deg)';
+            this.externalVariables[8].style.transition = 'all 0.2s';
 
-        setTimeout(() => {
-            this.restoreStartAtribute();
+            setTimeout(() => {
+                this.restoreStartAtribute();
 
-            this.externalVariables[8].style.transform = '';
-            this.externalVariables[8].style.transition = '';
+                this.externalVariables[8].style.transform = '';
+                this.externalVariables[8].style.transition = '';
 
-            this.upDate()[0]();
-            this.upDate()[1]();
-            this.upDate()[2]();
-            this.upDate()[3]();
-        }, 1000);
+                this.upDate()[0]();
+                this.upDate()[1]();
+                this.upDate()[2]();
+                this.upDate()[3]();
+            }, 1000);
+        }
     }
 
     // Передвижение
     movement(event) {
         if (this.state == 'alive') {
-            this.reduceSatiety(0.2);
+            this.reduceSatiety(0.05);
 
             // Движение влево
             if (event == this.controlKeys[2]) {
 
                 if (this.side == 1 && this.cordX > 0) {
 
-                    if (World.map[Math.round(this.cordY)][this.cordX - 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY)][this.cordX - 1]]]['collision'] == false) {
-                        if (World.map[Math.round(this.cordY) - 1][this.cordX - 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY) - 1][this.cordX - 1]]]['collision'] == false) {
+                    if (World.map[Math.round(this.cordY)][this.cordX - 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY)][this.cordX - 1] % 100]]['collision'] == false) {
+                        if (World.map[Math.round(this.cordY) - 1][this.cordX - 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY) - 1][this.cordX - 1] % 100]]['collision'] == false) {
                             this.cordX -= 1;
                             this.upDate()[0](1);
                         }
@@ -193,8 +234,8 @@ class Player {
             if (event == this.controlKeys[3]) {
 
                 if (this.side == -1 && this.cordX < World.widthArray - 1) {
-                    if (World.map[Math.round(this.cordY)][this.cordX + 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY)][this.cordX + 1]]]['collision'] == false) {
-                        if (World.map[Math.round(this.cordY) - 1][this.cordX + 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY - 1)][this.cordX + 1]]]['collision'] == false) {
+                    if (World.map[Math.round(this.cordY)][this.cordX + 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY)][this.cordX + 1] % 100]]['collision'] == false) {
+                        if (World.map[Math.round(this.cordY) - 1][this.cordX + 1] == undefined || blocks[blockList[World.map[Math.round(this.cordY - 1)][this.cordX + 1] % 100]]['collision'] == false) {
                             this.cordX += 1;
                             this.upDate()[0](0);
                         }
@@ -210,7 +251,7 @@ class Player {
 
                 if (this.cordY > 2 && !this.jumpCheck) {
 
-                    if ((World.map[Math.round(this.cordY - 2)][this.cordX] == undefined || blocks[blockList[World.map[Math.round(this.cordY) - 2][this.cordX]]]['collision'] == false) && World.map[Math.round(this.cordY) + 1][this.cordX] != undefined) {
+                    if ((World.map[Math.round(this.cordY - 2)][this.cordX] == undefined || blocks[blockList[World.map[Math.round(this.cordY) - 2][this.cordX] % 100]]['collision'] == false) && World.map[Math.round(this.cordY) + 1][this.cordX] != undefined) {
                         this.jumpCheck = true;
                         this.cordY -= 1;
                         this.upDate()[0](2);
@@ -241,7 +282,7 @@ class Player {
     // Ломать
     breakBlock(event) {
         if (this.state == 'alive') {
-            this.reduceSatiety(0.2);
+            this.reduceSatiety(0.05);
 
             if (event == this.controlKeys.slice(4, 5)) {
                 World.actions()[1](Math.round(this.cordY) - 2, this.cordX, this.playerNumber);
@@ -322,11 +363,12 @@ class Player {
             setTimeout(() => {
                 this.pageCheck = false;
 
-                if (World.map[Math.round(this.cordY) + 1][this.cordX] == undefined || blocks[blockList[World.map[Math.round(this.cordY) + 1][this.cordX]]]['collision'] == false) {
+                if (World.map[Math.round(this.cordY) + 1][this.cordX] == undefined || blocks[blockList[Math.floor(World.map[Math.round(this.cordY) + 1][this.cordX] % 100)]]['collision'] == false) {
+
                     this.cordY += 1;
-                    // (World.map[this.cordY - 2][this.cordX] != undefined) ? 
                     this.fallingSpeed++;
                     this.upDate()[0](3);
+
                 } else {
 
                     if (this.fallingSpeed > 3) {
@@ -355,14 +397,16 @@ class Player {
                 'name': blocks[item]['dropBlock'],
                 'quantity': 1
             });
+
+            if (this.inventory.length == 2) {
+                this.currentItem = this.inventory.length - 1;
+            }
+
         } else {
             // Увеличиваем количество
             this.inventory[res]['quantity'] += 1;
         }
 
-        if (this.currentItem == 0) {
-            this.currentItem = this.inventory.length - 1;
-        }
         this.upDate()[1]();
     }
 
@@ -439,6 +483,7 @@ class Player {
                 if (this2.currentItem != 0) {
                     this2.externalVariables[5].innerHTML = `
                     <img src = "${blocks[this2.inventory[this2.currentItem]['name']]['src']}" width="92px" height="92px">
+                    <div class = "quantityBlock">${this2.inventory[this2.currentItem]['quantity']}</div>
                     `;
                 } else this2.externalVariables[5].innerHTML = '';
             }, 100);
@@ -496,6 +541,8 @@ const World = {
     time: ['day', 1],
     clearCracks: false,
 
+    brokenBlocks: [
+    ],
 
     // Изменение времени суток
     changeOfDay() {
@@ -530,9 +577,15 @@ const World = {
             }
 
             // Голодание игроков со временем
-            if (this.time[1] / 3000 == Math.floor(this.time[1] / 3000)) {
+            if (this.time[1] / 4000 == Math.floor(this.time[1] / 4000)) {
                 players[0].reduceSatiety(10);
                 players[1].reduceSatiety(10);
+            }
+
+            // Востановление хп
+            if (this.time[1] / 1000 == Math.floor(this.time[1] / 1000)) {
+                players[0].pegeneration();
+                players[1].pegeneration();
             }
 
             this.time[1]++;
@@ -1031,21 +1084,45 @@ const World = {
                     [null, 15, 15, 15, 15, 15, null],
                     [null, null, 15, 14, 15, null, null],
                     [15, 15, null, 14, null, 15, 15],
-                    [15, [14, 1], 15, 14, [14, 1], [14, 1], 15],
-                    [null, 15, [14, 1], 14, null, 15, null],
+                    [15, 114, 15, 14, 114, 114, 15],
+                    [null, 15, 114, 14, null, 15, null],
                     [null, null, null, 14, null, null, null],
                     [null, null, null, 14, null, null, null]
                 ],
-                // [
-                //     [null, null, null, null, null, null, null],
-                //     [null, null, null, null, null, null, null],
-                //     [null, null, null, null, null, null, null],
-                //     [null, null, null, null, null, null, null],
-                //     [null, null, null, null, null, null, null],
-                //     [null, null, null, null, null, null, null],
-                //     [null, null, null, null, null, null, null],
-                //     [null, null, null, null, null, null, null]
-                // ]
+                [
+                    [null, null, 15, 15, 15, null, null],
+                    [null, 15, 15, 15, 15, 15, null],
+                    [null, null, 15, 14, 15, null, null],
+                    [15, 15, null, 14, null, 15, 15],
+                    [15, 114, 114, 14, 15, 114, 15],
+                    [null, 15, null, 14, 114, 15, null],
+                    [null, null, null, 14, null, null, null],
+                    [null, null, null, 14, null, null, null]
+                ],
+                [
+                    [null, '15', '15', '15', null, null, null, null, null],
+                    ['15', '15', '15', '15', '15', null, null, null, null],
+                    ['15', '15', '14', '15', '15', null, '15', '15', null],
+                    [null, '15', '14', '15', '15', '15', '15', '15', '15'],
+                    [null, null, '15', '14', '15', '15', '114', '114', '15'],
+                    [null, null, null, '14', '15', '14', '15', '15', null],
+                    [null, null, '15', null, '14', '15', null, null, null],
+                    [null, '15', '114', '114', '14', null, null, null, null],
+                    [null, null, null, null, '14', null, null, null, null],
+                    [null, null, null, null, '14', null, null, null, null]
+                ],
+                [
+                    [null, null, null, null, null, '15', '15', '15', null],
+                    [null, null, null, null, '15', '15', '15', '15', '15'],
+                    [null, '15', '15', null, '15', '15', '14', '15', '15'],
+                    ['15', '15', '15', '15', '15', '15', '14', '15', null],
+                    ['15', '114', '114', '15', '15', '14', '15', null, null],
+                    [null, '15', '15', '14', '15', '14', null, null, null],
+                    [null, null, null, '15', '14', null, '15', null, null],
+                    [null, null, null, null, '14', '114', '114', '15', null],
+                    [null, null, null, null, '14', null, null, null, null],
+                    [null, null, null, null, '14', null, null, null, null]
+                ]
             ];
 
             let pastX = null;
@@ -1057,11 +1134,13 @@ const World = {
                     if (this2.map[i][j] == undefined && this2.map[i + 1][j] != undefined) {
 
                         // Проверка на растояние после предыдущего
-                        if (j > pastX + 4) {
+                        if (j > pastX + 10) {
 
                             // Шанс
                             if (Math.floor(Math.random() * 10) == 0) {
-                                spawn(i - 7, j - 3, treeTemplates, Math.floor(Math.random() * treeTemplates.length));
+                                const variant = Math.floor(Math.random() * treeTemplates.length);
+
+                                spawn(i - treeTemplates[variant].length + 1, j - Math.floor(treeTemplates[variant][0].length / 2), treeTemplates, variant);
                                 pastX = j;
                             }
                         }
@@ -1073,10 +1152,10 @@ const World = {
         // Спавн каких-то обектов
         function spawn(startY, startX, templates, variant) {
 
-            if (startY > 0 && startY + templates[0].length - 1 < this2.heightArray - 4 && startX > 0 && startX + templates[0][0].length - 1 < this2.widthArray) {
+            if (startY > 0 && startY + templates[variant].length - 1 < this2.heightArray - 4 && startX > 0 && startX + templates[variant][0].length - 1 < this2.widthArray) {
 
-                for (let m = 0; m < templates[0].length; m++) {
-                    for (let n = 0; n < templates[0][0].length; n++) {
+                for (let m = 0; m < templates[variant].length; m++) {
+                    for (let n = 0; n < templates[variant][0].length; n++) {
 
                         (templates[variant][m][n] != null) ? this2.map[m + startY][n + startX] = templates[variant][m][n] : null;
                     }
@@ -1100,18 +1179,33 @@ const World = {
     actions() {
         const this2 = this;
 
+        // Проверка сломанных блоков
+        function checkBrokenBlocks(Y, X) {
+            let res = true;
+
+            this2.brokenBlocks.forEach(element => {
+                (element['Y'] == Y && element['X'] == X) ? res = false : null;
+            });
+
+            return res;
+        }
+
+        // Добавить сломанный блок
+        function AddBrokenBlock(blockID, Y, X) {
+            this2.brokenBlocks.push({
+                id: blockID,
+                Y: Y,
+                X: X
+            });
+
+            setTimeout(() => {
+                this2.brokenBlocks.splice(0, 1);
+            }, 400);
+        }
+
         // Ломание блоков
-        function breakingBlocks(Y, X, playerNumber) {            
-
-            let blockID = null;
-
-            // Проверка на массив
-            if (typeof (this2.map[Y][X]) != 'object') {
-
-                blockID = this2.map[Y][X];
-
-            } else blockID = this2.map[Y][X][0];
-            
+        function breakingBlocks(Y, X, playerNumber) {
+            let blockID = this2.map[Y][X] % 100;
             const item = blocks[blockList[blockID]];
 
             // Проверка выпадения без инструмента и с ним
@@ -1119,20 +1213,15 @@ const World = {
                 players[playerNumber - 1].addItemInInventory(item['dropBlock']);
             }
 
+            AddBrokenBlock(blockID, Y, X);
+
             this2.map[Y][X] = undefined;
             this2.upDate()[0]();
         }
 
         // Создание трещин
         function creatingCracks(Y, X, playerNumber) {
-            let blockID = null;
-
-            // Проверка на массив
-            if (typeof (this2.map[Y][X]) != 'object') {
-
-                blockID = this2.map[Y][X];
-
-            } else blockID = this2.map[Y][X][0];
+            let blockID = this2.map[Y][X] % 100;
 
             // Пробигаемся по массиву с трещенами
             for (let i = 0; i < this2.mapCracks.length; i++) {
@@ -1198,10 +1287,12 @@ const World = {
         function constructionBlocks(Y, X, playerNumber) {
             const player = players[playerNumber - 1];
 
-            for (let key in blockList) {
-                if (blockList[key] == player.inventory[player.currentItem].name) {
-                    this2.map[Y][X] = key;
-                    player.deleteItemInInventory(player.currentItem);
+            if (checkBrokenBlocks(Y, X)) {
+                for (let key in blockList) {
+                    if (blockList[key] == player.inventory[player.currentItem].name) {
+                        this2.map[Y][X] = key;
+                        player.deleteItemInInventory(player.currentItem);
+                    }
                 }
             }
 
@@ -1232,15 +1323,16 @@ const World = {
 
                         //  Проверка на передний блок
                         if (this2.map[i][j] != undefined) {
-                            if (typeof (this2.map[i][j]) != 'object') {
-                                mapHTML += `<div class="block" style = "margin-top: ${i * cellSize}px; margin-left: ${j * cellSize}px;"><img src = "${blocks[blockList[this2.map[i][j]]]['src']}" width="${cellSize}px" height="${cellSize}px"></div>`;
-                            } else {
-                                mapHTML += `<div class="block" style = "margin-top: ${i * cellSize}px; margin-left: ${j * cellSize}px; transform: rotate(90deg);"><img src = "${blocks[blockList[this2.map[i][j][0]]]['src']}" width="${cellSize}px" height="${cellSize}px"></div>`;
-                            }
+
+                            if (Math.floor(this2.map[i][j] / 100) == 0) {
+
+                                mapHTML += `<div class="block" style = "margin-top: ${i * cellSize}px; margin-left: ${j * cellSize}px;"><img src = "${blocks[blockList[this2.map[i][j] % 100]]['src']}" width="${cellSize}px" height="${cellSize}px"></div>`;
+
+                            } else mapHTML += `<div class="block" style = "margin-top: ${i * cellSize - 2}px; margin-left: ${j * cellSize - 1.7032}px; transform: rotate(${90 * Math.floor(this2.map[i][j] / 100)}deg);"><img src = "${blocks[blockList[this2.map[i][j] % 100]]['src']}" width="${cellSize}px" height="${cellSize}px"></div>`;
                         }
 
                         // Проверка на задний блок  
-                        if (this2.mapBehind[i][j] != undefined && (this2.map[i][j] == undefined || blocks[blockList[this2.map[i][j]]]['src'].slice(-3) != 'jpg')) {
+                        if (this2.mapBehind[i][j] != undefined && (this2.map[i][j] == undefined || blocks[blockList[this2.map[i][j] % 100]]['src'].slice(-3) != 'jpg')) {
                             mapBehindHTML += `<div class="block" style = "margin-top: ${i * cellSize}px; margin-left: ${j * cellSize}px;"><img src = "${blocksBehind[blockList[this2.mapBehind[i][j]]]}" width="${cellSize}px" height="${cellSize}px"></div>`;
                         }
                     }
@@ -1425,10 +1517,19 @@ const blocks = {
         "breakingSpeed": 2.5,
         "typeOfTool": "Axe",
         "dropOutWithoutATool": true,
-        "dropBlock": "BlockTree"
+        "dropBlock": "BlockTree2"
+    },
+    "BlockTree2": {
+        "src": "assets/img/textures/Блок дерево.jpg",
+        "collision": true,
+        "flowability": false,
+        "breakingSpeed": 2.5,
+        "typeOfTool": "Axe",
+        "dropOutWithoutATool": true,
+        "dropBlock": "BlockTree2"
     },
     "BlockFoliage": {
-        "src": "assets/img/textures/Блок листва.jpg",
+        "src": "assets/img/textures/Блок листва.png",
         "collision": true,
         "flowability": false,
         "breakingSpeed": 4,
@@ -1465,7 +1566,8 @@ const blockList = {
     "12": "BlockGravel",
     "13": "BlockPebble",
     "14": "BlockTree",
-    "15": "BlockFoliage"
+    "15": "BlockFoliage",
+    "16": "BlockTree2"
 }
 
 
@@ -1501,6 +1603,7 @@ const tools = {
 // Генерация мира
 function generateMap(width = 100, height = 100) {
     // Генерация 
+
     World.timeWorld();
     World.generateWorld()[0](width, height);
     World.generateWorld()[6]();
@@ -1574,53 +1677,76 @@ document.addEventListener('keydown', (event) => {
             event.preventDefault();
             setTimeout(() => {
 
+                // Если в игроке есть другой игрок
+                if (player['cordX'] == otherPlayer['cordX'] && (player['cordY'] - 1 == otherPlayer['cordY'] || player['cordY'] - 1 == otherPlayer['cordY'] - 1)) {
+                    otherPlayer.pushOff(player.side);
+                    otherPlayer.takeDamage(5);
+                    return;
+                }
+
+                // Верх
                 if (event.code == player['controlKeys'].slice(4, 5)) {
 
                     if (World.map[Math.round(player['cordY']) - 2][player['cordX']] != 3) {
                         if (World.map[Math.round(player['cordY']) - 2][player['cordX']] != undefined) {
                             player.breakBlock(event.code);
                         } else {
-                            if (!(Math.round(player['cordY']) - 2 == Math.round(otherPlayer['cordY']) && player['cordX'] == otherPlayer['cordX'])) {
+                            if (!(Math.round(player['cordY']) - 2 == Math.round(otherPlayer['cordY']) && player['cordX'] == otherPlayer['cordX']) && !(Math.round(player['cordY']) - 1 == Math.round(otherPlayer['cordY']) && player['cordX'] == otherPlayer['cordX'])) {
                                 player.putBlock(event.code);
+                            } else {
+                                otherPlayer.pushOff(player.side);
+                                otherPlayer.takeDamage(5);
                             }
                         }
                     }
                 }
 
+                // Низ
                 if (event.code == player['controlKeys'].slice(5, 6)) {
 
                     if (World.map[Math.round(player['cordY']) + 1][player['cordX']] != 3) {
                         if (World.map[Math.round(player['cordY']) + 1][player['cordX']] != undefined) {
                             player.breakBlock(event.code);
                         } else {
-                            if (!(Math.round(player['cordY']) + 1 == Math.round(otherPlayer['cordY']) && player['cordX'] == otherPlayer['cordX'])) {
+                            if (!(Math.round(player['cordY']) + 1 == Math.round(otherPlayer['cordY']) && player['cordX'] == otherPlayer['cordX']) && !(Math.round(player['cordY']) + 2 == Math.round(otherPlayer['cordY']) && player['cordX'] == otherPlayer['cordX'])) {
                                 player.putBlock(event.code);
+                            } else {
+                                otherPlayer.pushOff(player.side);
+                                otherPlayer.takeDamage(5);
                             }
                         }
                     }
                 }
 
+                // На уровне головы
                 if (event.code == player['controlKeys'].slice(6, 7)) {
 
                     if (World.map[Math.round(player['cordY']) - 1][player['cordX'] + player['side'] * (-1)] != 3) {
                         if (World.map[Math.round(player['cordY']) - 1][player['cordX'] + player['side'] * (-1)] != undefined) {
                             player.breakBlock(event.code);
                         } else {
-                            if (!(Math.round(player['cordY']) - 1 == Math.round(otherPlayer['cordY']) - 1 && player['cordX'] + player['side'] * (-1) == otherPlayer['cordX'])) {
+                            if (!(Math.round(player['cordY']) == Math.round(otherPlayer['cordY']) && player['cordX'] + player['side'] * (-1) == otherPlayer['cordX']) && !(Math.round(player['cordY']) - 1 == Math.round(otherPlayer['cordY']) && player['cordX'] + player['side'] * (-1) == otherPlayer['cordX'])) {
                                 player.putBlock(event.code);
+                            } else {
+                                otherPlayer.pushOff(player.side);
+                                otherPlayer.takeDamage(5);
                             }
                         }
                     }
                 }
 
+                // На уровне ног
                 if (event.code == player['controlKeys'].slice(7, 8)) {
 
                     if (World.map[Math.round(player['cordY'])][player['cordX'] + player['side'] * (-1)] != 3) {
                         if (World.map[Math.round(player['cordY'])][player['cordX'] + player['side'] * (-1)] != undefined) {
                             player.breakBlock(event.code);
                         } else {
-                            if (!(Math.round(player['cordY']) == Math.round(otherPlayer['cordY']) && player['cordX'] + player['side'] * (-1) == otherPlayer['cordX'])) {
+                            if (!(Math.round(player['cordY']) == Math.round(otherPlayer['cordY']) && player['cordX'] + player['side'] * (-1) == otherPlayer['cordX']) && !(Math.round(player['cordY']) + 1 == Math.round(otherPlayer['cordY']) && player['cordX'] + player['side'] * (-1) == otherPlayer['cordX'])) {
                                 player.putBlock(event.code);
+                            } else {
+                                otherPlayer.pushOff(player.side);
+                                otherPlayer.takeDamage(5);
                             }
                         }
                     }
