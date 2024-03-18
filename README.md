@@ -157,8 +157,8 @@
 <h2>Version 1.2 <a href="https://picsile.github.io/GameMine/Version_1.2/index.html" class="buttonTest">Link to test</a></h2>
 
 <p>Snapshots:</p>
-<img src="Version_1.2/snapshots/Dark.png" width="400" height="350"></img>
-<img src="Version_1.2/snapshots/change of day.gif" width="400" height="250"></img>
+<img src="Version_1.2/snapshots/Dark.png" width="400"></img>
+<img src="Version_1.2/snapshots/change of day.gif" width="400"></img>
 
 <h3>English</h3>
 <p>Major changes:</p>
