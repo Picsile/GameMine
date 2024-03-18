@@ -60,8 +60,8 @@
 <h2>Version 1.4 <a href="https://picsile.github.io/GameMine/Version_1.4/index.html" class="buttonTest">Link to test</a></h2>
 
 <p>Snapshots:</p>
-<img src="Version_1.4/snapshots/1.jpg" width="400" height="285"></img>
-<img src="Version_1.4/snapshots/2.gif" width="400" height="230"></img>
+<img src="Version_1.4/snapshots/1.jpg" width="400"></img>
+<img src="Version_1.4/snapshots/2.gif" width="400"></img>
 
 <h3>English</h3>
 <p>Major changes:</p>
