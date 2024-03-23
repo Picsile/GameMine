@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/world.css">
+    <link rel="stylesheet" href="assets/css/unit.css">
+</head>
+
+<body>
+
+    <div id="game">
+
+        <!-- Растягиваемая область -->
+        <div id="sizeGame">
+
+            <!-- Окружение -->
+            <div class="environment">
+
+                <!-- Небо -->
+                <div id="sky">
+                    <div id="stars"></div>
+                    <div id="sun"></div>
+                    <div id="moon"></div>
+                </div>
+
+                <!-- Темнота фон -->
+                <div id="darkFon"></div>
+            </div>
+
+            <!-- Мир -->
+            <div class="world">
+
+                <div id="blocksBehind">
+                </div>
+
+                <div id="blocks">
+                </div>
+
+                <div id="cracks">
+                </div>
+
+                <!-- Существа -->
+                <div class="units">
+
+                    <!-- Игроки -->
+                    <div class="players">
+
+                        <div class="player">
+
+                            <!-- Анимация в лево -->
+                            <div id="player1AnimLeft">
+
+                                <!-- Анимация в право -->
+                                <div id="player1AnimRight">
+
+                                    <!-- Анимация прыжок -->
+                                    <div id="player1AnimUP">
+
+                                        <!-- Анимация падение -->
+                                        <div id="player1AnimDown">
+
+                                            <!-- Другие анимации -->
+                                            <div id="player1Anim">
+
+                                                <div id="player1" class="anim">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="player">
+
+                            <!-- Анимация в лево -->
+                            <div id="player2AnimLeft">
+
+                                <!-- Анимация в право -->
+                                <div id="player2AnimRight">
+
+                                    <!-- Анимация прыжок -->
+                                    <div id="player2AnimUP">
+
+                                        <!-- Анимация падение -->
+                                        <div id="player2AnimDown">
+
+                                            <!-- Другие анимации -->
+                                            <div id="player2Anim">
+
+                                                <div id="player2" class="anim">
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Монстры -->
+                    <div class="monsters">
+                    </div>
+
+                </div>
+
+                <div id="blocksFront">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Интерфейс -->
+        <div class="interface">
+
+            <div class="player1Invrntory">
+                <div class="inventoryFrame" id="player1Invrntory">
+                </div>
+            </div>
+
+            <div class="player2Invrntory">
+                <div class="inventoryFrame" id="player2Invrntory">
+                </div>
+            </div>
+
+            <div id="player1Satiety">
+            </div>
+
+            <div id="player2Satiety">
+            </div>
+
+            <div id="player1Health">
+            </div>
+
+            <div id="player2Health">
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="assets/JS/script.js"></script>
+</body>
+
+</html>

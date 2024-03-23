@@ -1,0 +1,133 @@
+/* Анимации игрока */
+@keyframes MovementFront {
+    0% {
+        margin-left: var(--cellSizeNegative);
+    }
+
+    100% {
+        margin-left: 0px;
+    }
+}
+
+@keyframes MovementBehind {
+    0% {
+        margin-left: var(--cellSize);
+    }
+
+    100% {
+        margin-left: 0px;
+    }
+}
+
+@keyframes MovementUp {
+    0% {
+        padding-top: var(--cellSize);
+    }
+
+    100% {
+        padding-top: 0px;
+    }
+}
+
+@keyframes MovementDown {
+    0% {
+        margin-top: var(--cellSizeNegative);
+    }
+
+    100% {
+        margin-top: 0px;
+    }
+}
+
+/* Дыхание */
+.anim {
+    animation: Breath 2s infinite;
+}
+
+@keyframes Breath {
+    0% {    
+        padding-top: 1.5px;
+        transform: scale(0.98, 0.96);
+    }
+
+    50% {
+        padding-top: 0px;
+        transform: scale(1, 1);
+    }
+
+    100% {    
+        padding-top: 1.5px;
+        transform: scale(0.98, 0.96);
+    }
+}
+
+/* Инвентари */
+
+.player1Invrntory, 
+.player2Invrntory {
+    position: fixed;
+    left: 70px;
+    bottom: 95px;
+    width: 120px;
+    height: 120px;
+    border: solid 2px rgb(76, 76, 76);
+}
+
+.player2Invrntory {
+    left: auto;
+    right: 95px;
+}
+
+.inventoryFrame {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.659);
+    padding: 10px;
+    border: solid 2px rgb(123, 123, 123);
+}
+
+#player1Satiety,
+#player1Health,
+#player2Satiety,
+#player2Health {
+    position: fixed;
+    display: flex;
+    left: 200px;
+    bottom: 150px;
+    width: 370px;
+}
+
+#player1Satiety img,
+#player1Health img,
+#player2Satiety img,
+#player2Health img {
+    margin: 0 4px;
+}
+
+#player1Health,
+#player2Health {
+    bottom: 105px;
+}
+
+#player2Satiety,
+#player2Health {
+    justify-content: right;
+    left: auto;
+    right: 225px;
+}
+
+.quantityBlock {
+    position: absolute;
+    bottom: -1px;
+    left: -10px;
+    
+    width: 120px;
+
+    font-family:Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    font-size: 40px;
+
+    color: white;
+    -webkit-text-stroke: 2px black;
+    text-align: end;
+}
