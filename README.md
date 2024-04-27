@@ -1,6 +1,6 @@
 <h1>GameMine</h1>
 <h3>Minecraft and Terraria Mashup</h3>
-<img src = "preview.jpg"></img>
+<img src = "preview2.jpg"></img>
 
 <div style = "margin: 15px 0 30px -20px">
 <a href="https://picsile.github.io/GameMine/Version_1.4/index.html" class="buttonTest">Link to last version</a>
