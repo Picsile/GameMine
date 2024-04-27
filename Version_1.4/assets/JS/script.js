@@ -1321,6 +1321,7 @@ const World = {
                     // Проверка на темноту
                     // if (this2.mapDark[i][j] != 1) {
 
+                    
                         //  Проверка на передний блок
                         if (this2.map[i][j] != undefined) {
 
