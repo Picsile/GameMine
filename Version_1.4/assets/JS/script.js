@@ -1319,7 +1319,7 @@ const World = {
                 for (let j = 0; j < this2.widthArray; j++) {
 
                     // Проверка на темноту
-                    if (this2.mapDark[i][j] != 1) {
+                    // if (this2.mapDark[i][j] != 1) {
 
                         //  Проверка на передний блок
                         if (this2.map[i][j] != undefined) {
@@ -1335,7 +1335,7 @@ const World = {
                         if (this2.mapBehind[i][j] != undefined && (this2.map[i][j] == undefined || blocks[blockList[this2.map[i][j] % 100]]['src'].slice(-3) != 'jpg')) {
                             mapBehindHTML += `<div class="block" style = "margin-top: ${i * cellSize}px; margin-left: ${j * cellSize}px;"><img src = "${blocksBehind[blockList[this2.mapBehind[i][j]]]}" width="${cellSize}px" height="${cellSize}px"></div>`;
                         }
-                    }
+                    // }
                 }
             }
 
@@ -1354,9 +1354,9 @@ const World = {
             for (let i = 0; i < this2.mapFront.length; i++) {
 
                 // Проверка на темноту
-                if (this2.mapDark[this2.mapFront[i]['Y']][this2.mapFront[i]['X']] != 1) {
+                // if (this2.mapDark[this2.mapFront[i]['Y']][this2.mapFront[i]['X']] != 1) {
                     mapFrontHTML += `<div class="block" style = "margin-top: ${this2.mapFront[i]['Y'] * cellSize}px; margin-left: ${this2.mapFront[i]['X'] * cellSize}px;"><img src = "${blocks[blockList[this2.mapFront[i]['block']]]['src']}" width="${cellSize}px" height="${cellSize}px"></div>`;
-                }
+                // }
             }
 
             blocksFrontDiv.innerHTML = mapFrontHTML;
