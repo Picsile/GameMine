@@ -3,7 +3,7 @@
 <img src = "preview.jpg"></img>
 
 <div style = "margin: 15px 0 30px -20px">
-<a href="https://picsile.github.io/GameMine/Version_1.4/index.html" class="buttonTest">Link to latest version</a>
+<a href="https://picsile.github.io/GameMine/Version_1.4/index.html" class="buttonTest">Link to last version</a>
 </div>
 
 <!-- Управление -->
