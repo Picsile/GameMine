@@ -3,7 +3,7 @@
 <img src = "preview.jpg"></img>
 
 <div style = "margin: 15px 0 30px -20px">
-<a href="https://picsile.github.io/GameMine/Version_1.3/index.html" class="buttonTest">Link to latest version</a>
+<a href="https://picsile.github.io/GameMine/Version_1.4/index.html" class="buttonTest">Link to last version</a>
 </div>
 
 <!-- Управление -->
@@ -67,8 +67,8 @@
 <h2>Version 1.4 <a href="https://picsile.github.io/GameMine/Version_1.4/index.html" class="buttonTest">Link to test</a></h2>
 
 <p>Snapshots:</p>
-<img src="Version_1.4/snapshots/1.jpg" width="400" height="285"></img>
-<img src="Version_1.4/snapshots/2.gif" width="400" height="230"></img>
+<img src="Version_1.4/snapshots/1.jpg" width="400"></img>
+<img src="Version_1.4/snapshots/2.gif" width="400"></img>
 
 <h3>English</h3>
 <p>Major changes:</p>
@@ -122,8 +122,8 @@
 <h2>Version 1.3 <a href="https://picsile.github.io/GameMine/Version_1.3/index.html" class="buttonTest">Link to test</a></h2>
 
 <p>Snapshots:</p>
-<img src="Version_1.3/snapshots/1.jpg" width="400" height="250"></img>
-<img src="Version_1.3/snapshots/2.jpg" width="400" height="250"></img>
+<img src="Version_1.3/snapshots/1.jpg" width="400"></img>
+<img src="Version_1.3/snapshots/2.jpg" width="400"></img>
 
 <h3>English</h3>
 <p>Major changes:</p>
@@ -164,8 +164,8 @@
 <h2>Version 1.2 <a href="https://picsile.github.io/GameMine/Version_1.2/index.html" class="buttonTest">Link to test</a></h2>
 
 <p>Snapshots:</p>
-<img src="Version_1.2/snapshots/Dark.png" width="400" height="350"></img>
-<img src="Version_1.2/snapshots/change of day.gif" width="400" height="250"></img>
+<img src="Version_1.2/snapshots/Dark.png" width="400"></img>
+<img src="Version_1.2/snapshots/change of day.gif" width="400"></img>
 
 <h3>English</h3>
 <p>Major changes:</p>
