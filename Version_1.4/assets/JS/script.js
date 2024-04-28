@@ -9,7 +9,7 @@ const blocksDiv = document.getElementById('blocks');
 const blocksFrontDiv = document.getElementById('blocksFront');
 const cracksDiv = document.getElementById('cracks');
 
-let cellSize = 20.5;
+let cellSize = 35.5;
 let currentZoom = cellSize;
 const players = [];
 
