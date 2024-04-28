@@ -536,7 +536,7 @@ const World = {
 
     widthArray: 0,
     heightArray: 0,
-    startheight: 15,
+    startheight: 14,
 
     time: ['day', 1],
     clearCracks: false,
